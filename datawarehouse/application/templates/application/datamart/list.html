@@ -1,0 +1,7 @@
+{% extends 'application/base.html' %}
+{% block datamart %}
+    <h1>vamos começar</h1>
+    {% for datamart in datamarts %}
+        {{datamart.name}}
+    {% endfor %}
+{% endblock %}
