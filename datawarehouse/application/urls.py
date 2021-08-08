@@ -5,4 +5,5 @@ app_name = 'application'
 
 urlpatterns = [
     path('',views.datamart_list, name='datamart_list'),
+    path('/file', views.fileinput, name='file_input'),
 ]

@@ -1,0 +1,9 @@
+Enviando mensagens
+https://stackoverflow.com/questions/28723266/django-display-message-after-post-form-submit
+
+Upload de arquivos
+https://www.javatpoint.com/django-file-upload
+https://docs.djangoproject.com/en/3.2/topics/http/file-uploads/
+
+Conexão com banco de dados - PostGreSQL
+# https://www.postgresqltutorial.com/postgresql-python/connect/
