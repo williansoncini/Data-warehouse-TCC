@@ -6,5 +6,5 @@ def handle_uploaded_file(file):
             destination.write(chunk)    
 
 def getAbsolutePath(nameFile):
-    return os.path.abspath('application/upload/'+nameFile)
+    return str(os.path.abspath('application/upload/'+nameFile))
     

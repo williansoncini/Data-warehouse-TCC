@@ -10,11 +10,13 @@
 <body>
     <div id='sidebar'>
         <h2>Data warehouse</h2>
-        <p>lista de telas</p>
+        <a href="http://localhost:8000/application/file"> importar</a>
     </div>
-    <div id='content'>
-        {% block datamart %}
-        {% endblock %} 
+    <div id='center_data'>
+        <div id='content'>
+            {% block datamart %}
+            {% endblock %} 
+        </div>  
     </div>
 </body>
 </html>
