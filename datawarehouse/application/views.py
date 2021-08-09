@@ -5,7 +5,7 @@ from .forms import fileForm
 from .services.file.fileService import handle_uploaded_file
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
-
+from .services.file.inputFileWithCsv import importCSVfile
 
 # Create your views here.
 def datamart_list(request):
@@ -24,13 +24,19 @@ def fileinput(request):
         print(file.content_type)
 
         fs = FileSystemStorage()
-        fs.save(file.name, file)
+        name = fs.save(file.name, file)
+        url = fs.url(name)
+
+        importCSVfile(url)
         # if file.is_valid():
         #     handle_uploaded_file(request.FILES['document']) 
         #     messages.success(request,'Arquivo carregado com sucesso')
     # else:
     #     file = fileForm()
         content['mensagem'] = 'Arquivo carregado com sucesso!'
+        
+        # Testando a importação do arquivo no banco de dados
+
 
     return render(request, 'application/file/inputfile.html', content)
 

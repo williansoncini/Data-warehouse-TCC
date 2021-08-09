@@ -4,6 +4,7 @@ https://stackoverflow.com/questions/28723266/django-display-message-after-post-f
 Upload de arquivos
 https://www.javatpoint.com/django-file-upload
 https://docs.djangoproject.com/en/3.2/topics/http/file-uploads/
+https://www.youtube.com/watch?v=Zx09vcYq1oc&list=PLLxk3TkuAYnpm24Ma1XenNeq1oxxRcYFT&t=483s&ab_channel=VitorFreitas
 
 Conexão com banco de dados - PostGreSQL
 # https://www.postgresqltutorial.com/postgresql-python/connect/
