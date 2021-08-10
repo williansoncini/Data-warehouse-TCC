@@ -7,12 +7,10 @@ module_dir = os.path.dirname(__file__)  # get current directory
 
 def importCSVfile(nameFile):
     conn = connect()
-
     # file_path = os.path.join(module_dir, '..TESTE.CSV')
     # open(str(nameFile),'rb')
     # print('nameFile:',nameFile)
     # print('CAMINHO DO ARQUIVO:', file_path)
-    
     # fs = FileSystemStorage()
     # file = fs.open(nameFile,'rb')
     cur = conn.cursor()

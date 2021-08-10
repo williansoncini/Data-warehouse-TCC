@@ -1,7 +1,7 @@
 # from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,get_list_or_404
 # from .models import Datamart
-# from .forms import fileForm
+from .forms import QueryForm
 # from .services.file.fileService import handle_uploaded_file
 # from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
@@ -42,3 +42,9 @@ def fileinput(request):
     return render(request, 'application/file/inputfile.html', content)
 
     # return render(request,'application/file/inputfile.html', {'form':file})
+
+
+def queryInput(request):
+    queryForm = QueryForm()
+
+    return render(request, 'application/input/query.html', {'queryForm': queryForm})
