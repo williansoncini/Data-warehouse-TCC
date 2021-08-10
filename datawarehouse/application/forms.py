@@ -5,6 +5,6 @@ class fileForm(forms.Form):
 
 class QueryForm(forms.Form):
     # query = forms.CharField()
-    query = forms.CharField(max_length=1000,widget=forms.Textarea)
+    # query = forms.CharField(max_length=1000,widget=forms.Textarea)
     # query = forms.CharField(max_length=1000,widget=forms.Textarea())
-    kaio = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Please enter the  description'}))
+    query = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Coloque a query de consulta aqui'}))

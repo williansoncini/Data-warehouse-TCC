@@ -8,3 +8,6 @@ https://www.youtube.com/watch?v=Zx09vcYq1oc&list=PLLxk3TkuAYnpm24Ma1XenNeq1oxxRc
 
 Conexão com banco de dados - PostGreSQL
 # https://www.postgresqltutorial.com/postgresql-python/connect/
+
+Char field GET
+https://www.geeksforgeeks.org/charfield-django-forms/

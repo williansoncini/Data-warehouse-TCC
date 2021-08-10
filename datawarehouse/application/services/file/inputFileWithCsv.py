@@ -2,7 +2,7 @@ from ..database.connectStagingArea import connect
 from django.core.files.storage import FileSystemStorage
 import os
 
-module_dir = os.path.dirname(__file__)  # get current directory
+# module_dir = os.path.dirname(__file__)  # get current directory
 
 
 def importCSVfile(nameFile):
