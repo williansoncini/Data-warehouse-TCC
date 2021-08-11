@@ -11,3 +11,11 @@ Conexão com banco de dados - PostGreSQL
 
 Char field GET
 https://www.geeksforgeeks.org/charfield-django-forms/
+
+CSV FILE
+https://www.pythontutorial.net/python-basics/python-write-csv-file/
+https://www.programiz.com/python-programming/writing-csv-files
+
+EXPORT CSV FILE
+https://newbedev.com/exporting-a-postgresql-query-to-a-csv-file-using-python
+https://kb.objectrocket.com/postgresql/from-postgres-to-csv-with-python-910
