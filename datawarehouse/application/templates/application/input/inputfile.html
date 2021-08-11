@@ -1,0 +1,15 @@
+{% block fileCsvInput %}
+    <form method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <input type="file" name="document" accept>
+        <button type="submit"> Carregar arquivo </button>
+    </form>
+
+    {% if mensagem %}
+        <h1>{{mensagem}}</h1>
+    {% endif %} 
+
+    <a href="http://localhost:8000/application"> Voltar </a>
+
+{% endblock fileCsvInput %}
+

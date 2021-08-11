@@ -5,7 +5,7 @@ app_name = 'application'
 
 urlpatterns = [
     path('',views.datamart_list, name='datamart_list'),
-    path('/teste/file', views.fileinput, name='file_input'),
-    path('/teste/query', views.queryInput, name='query_input'),
-    # path('/file', views.fileinput, name='file_input'),
+    path('/input/', views.listOfFormsImportations, name='list_forms_importations'),
+    # path('/input/file', views.fileinput, name='file_input'),
+    # path('/input/query', views.queryInput, name='query_input'),
 ]

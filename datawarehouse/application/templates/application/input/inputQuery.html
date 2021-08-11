@@ -1,0 +1,7 @@
+{% block queryInput %}
+    <form method="get" >
+        {% csrf_token %}
+        {{queryForm}}
+        <button type='submit'> Próximo </button>
+    </form>
+{% endblock queryInput %}
