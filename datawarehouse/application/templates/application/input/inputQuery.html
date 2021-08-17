@@ -1,7 +1,35 @@
+{% extends 'application/base.html' %}
+
 {% block queryInput %}
+    <h1>QUERY</h1>
     <form method="get" >
         {% csrf_token %}
         {{queryForm}}
         <button type='submit'> Próximo </button>
     </form>
+
+    {% if mensagem %}
+        <h1>{{mensagem}}</h1>
+    {% endif %} 
+
+    {% if dados %}
+        <table border="1">
+        <tr>
+        {% for coluna in colunas %}
+            {% for nome in coluna %}
+                <th>{{nome}}</th>
+            {% endfor %}
+        {% endfor %}
+        </tr>
+        {% for linhas in dados %}
+            <tr>
+                {% for dado in linhas %}
+                    <td> {{dado}} </td>    
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+
+    <a href="http://localhost:8000/application"> Voltar </a>
 {% endblock queryInput %}

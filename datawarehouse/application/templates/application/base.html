@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,15 +8,30 @@
     <title>Data warehouse</title>
 </head>
 <body>
-    <div id='sidebar'>
-        <h2>Data warehouse</h2>
-        <a href="http://localhost:8000/application/teste/"> importar</a>
+    <div>
+        <ul>
+            <li>IMPORT</li>
+            <ul>
+                <li><a href="http://localhost:8000/application/input/csv"> CSV FILE </a></li>
+                <li><a href="http://localhost:8000/application/input/dump"> DUMP FILE </a></li>
+                <li><a href="http://localhost:8000/application/input/query"> QUERY STATEMENT </a></li>
+            </ul>
+        </ul>
     </div>
-    <div id='center_data'>
-        <div id='content'>
-            {% block datamart %}
-            {% endblock %} 
-        </div>  
-    </div>
+
+    {% block home %}
+    {% endblock home %}
+
+    {% block fileCsvInput %}
+    {% endblock fileCsvInput %}
+
+    {% block fileDumpInput %}
+    {% endblock fileDumpInput %}
+
+    {% block queryInput %}
+    {% endblock queryInput %}
+
+    {% block datamart %}
+    {% endblock datamart%} 
 </body>
 </html>
