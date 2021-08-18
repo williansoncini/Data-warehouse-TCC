@@ -1,7 +1,7 @@
 import psycopg2
 from .services.file.csvService import makeCSVFile
 from django.shortcuts import render
-from .forms import QueryForm
+from .forms import QueryForm, TypeDataForm
 from django.core.files.storage import FileSystemStorage
 from .services.file.inputFileWithCsv import importCSVfile
 from application.services.database.connectStagingArea import connect
@@ -108,7 +108,9 @@ def getMenuInput(request):
     return render(request, 'application/input/menu.html')
 
 def getHome(request):
-    return render(request, 'application/home.html')
+    form = TypeDataForm()
+
+    return render(request, 'application/home.html', {'form': form})
 
 def inputDumpFile(request):
     retorno = {}
