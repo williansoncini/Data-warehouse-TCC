@@ -1,22 +1,31 @@
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
-from ...services.file.csvService import getColumnsFromCsvFile, getTypeOfColumnsFromCsvFile, importCsvFileInTable
+from ...services.file.csvService import getColumnsFromCsvFile, getTypeOfColumnsFromCsvFile, makeDicWithColumnType
+from ...services.database.stagingArea import importCsvFileInTable, createTableForEtl
 
 def inputCsvFile(request):
     columns = []
     typeColumns = []
     if request.method == 'POST':
         try:
+            nameFile = request.FILES['document']
+            print('Nome do arquivo: ', nameFile)
+
             filePathAfterUpload = saveCsvFileAndReturnFilePath(request.FILES['document'])
-            importCsvFileInTable(filePathAfterUpload)
             columns = getColumnsFromCsvFile(filePathAfterUpload)
             typeColumns = getTypeOfColumnsFromCsvFile(filePathAfterUpload)
-            print(columns)
-            print(typeColumns)
+
+            dictionarieWithColumnsAndTypes = makeDicWithColumnType(columns,typeColumns)
+
+            createTableForEtl('TESTE_CSV',dictionarieWithColumnsAndTypes)
+            
+            importCsvFileInTable(filePathAfterUpload, 'TESTE_CSV')
+            # print(columns)
+            # print(typeColumns)
             return render(request, 'application/input/inputfile.html', {
                 'message': getSucessMessage(),
-                'columns': columns
-                # 'typeColumns': typeColumns
+                'columns': columns,
+                'typeColumns': typeColumns
                 })
         except OSError as err:
             print(err)

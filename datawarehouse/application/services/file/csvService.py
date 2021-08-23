@@ -40,7 +40,7 @@ def getTypeOfColumnsFromCsvFile(filePathAfterUpload):
         for data in firstRowData:
             listTypeOfData.append(getTypeData(data))
 
-        parseTypeDataToSqlTypeData(listTypeOfData)
+        listTypeOfData = parseTypeDataToSqlTypeData(listTypeOfData)
 
         file.close()
 
@@ -75,7 +75,7 @@ def parseTypeDataToSqlTypeData(typeDatas):
     sqlTypeData = []
 
     for type in typeDatas:
-        print(type)
+        # print(type)
         if type == str:
             sqlTypeData.append('VARCHAR')
         elif type == int:
@@ -84,16 +84,13 @@ def parseTypeDataToSqlTypeData(typeDatas):
             sqlTypeData.append('DECIMAL')
         else:
             sqlTypeData.append('VARCHAR')
-    print(sqlTypeData)
-    # return sqlTypeData
+    # print('teste')
+    # print(sqlTypeData)
+    return sqlTypeData
 
-def importCsvFileInTable(filePathAfterUpload):
-    conn = connect()
-    cur = conn.cursor()
-    file = open(filePathAfterUpload, 'r')
-    cur.copy_from(file,'teste_csv',sep=';')
-    cur.close()
+def makeDicWithColumnType(columns, types):
+    dictionarie = {}
+    for index, column in enumerate(columns):
+        dictionarie[column] = types[index]
 
-    conn.commit()
-    print('conexão sendo fechada!')
-    conn.close()
+    return dictionarie

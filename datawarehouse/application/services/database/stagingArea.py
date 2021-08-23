@@ -13,5 +13,24 @@ def connect():
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
 
-def createTableToEtl(numberColumns):
+def createTableForEtl(nameTable, columnsAndTypes):
+    # conn = connect()
+    statement = 'CREATE TABLE IF NOT EXISTS {} ( \n'.format(nameTable)
+    for key, value in columnsAndTypes.items():
+        statement += '{} {}; \n'.format(key, value)
+    statement += ');'
+
+    print(statement)
+
+
+def importCsvFileInTable(filePath, nameTable):
     conn = connect()
+    cur = conn.cursor()
+    file = open(filePath, 'r')
+
+    cur.copy_from(file,'teste_csv',sep=';')
+    cur.close()
+
+    conn.commit()
+    print('conexão sendo fechada!')
+    conn.close()
