@@ -18,15 +18,16 @@ def getColumnsFromCsvFile(filePathAfterUpload):
 
         listColumns = []
         for index, column in enumerate(columns):
-            if checkIfIsString(str(column)):
-                listColumns.append(str(column))
+            if checkIfIsString(column):
+                listColumns.append(column)
             else:
                 listColumns.append('column_{}'.format(index+1))
 
         file.close()
         return listColumns
-    except:
+    except Exception as e:
         print('Erro ao pegar lista de colunas')
+        print(e)
 
 def getTypeOfColumnsFromCsvFile(filePathAfterUpload):
     try:
@@ -48,28 +49,25 @@ def getTypeOfColumnsFromCsvFile(filePathAfterUpload):
         return listTypeOfData
     except:
         print('Erro ao pegar lista de tipos das colunas')
-       
 
-def checkIfIsString(string):
-    if string.isdigit():
-            # print('Esse campo é um numero')
-            return False
-    else:
-        if string[0].isdigit():
-            # print('A primeira letra é um número')
-            return False
-        else:
-            return True
-        
 def getTypeData(data):
-    stringData = str(data)
+    print(data)
     try:
-        dataAfterTratament = literal_eval(stringData)
+        dataAfterTratament = literal_eval(data)
         return type(dataAfterTratament)
         # print('Dado tratado: {} seu tipo: {}'.format(dataBeforeTratament,type(dataBeforeTratament)))
     except:
-        return type(stringData)
-        # print('Dado não tratado: {} seu tipo: {}'.format(stringData, type(stringData)))
+        return type(data)
+        # print('Dado não tratado: {} seu tipo: {}'.format(stringData, type(stringData)))    
+
+def checkIfIsString(data):
+    data = getTypeData(data)
+    if data == str:
+        # print('Esse campo é um numero')
+        return True
+    else:
+        # print('A primeira letra é um número')
+        return False
 
 def parseTypeDataToSqlTypeData(typeDatas):
     sqlTypeData = []
@@ -91,6 +89,8 @@ def parseTypeDataToSqlTypeData(typeDatas):
 def makeDicWithColumnType(columns, types):
     dictionarie = {}
     for index, column in enumerate(columns):
+        print('dicionario coluna: {}'.format(column))
+        print('dicionario tipo: {}'.format(types[index]))
         dictionarie[column] = types[index]
 
     return dictionarie

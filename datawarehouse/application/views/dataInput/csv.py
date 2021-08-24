@@ -1,3 +1,4 @@
+from os.path import splitext
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from ...services.file.csvService import getColumnsFromCsvFile, getTypeOfColumnsFromCsvFile, makeDicWithColumnType
@@ -8,18 +9,13 @@ def inputCsvFile(request):
     typeColumns = []
     if request.method == 'POST':
         try:
-            nameFile = request.FILES['document']
-            print('Nome do arquivo: ', nameFile)
-
+            nameFile = formatFileName(str(request.FILES['document']))
             filePathAfterUpload = saveCsvFileAndReturnFilePath(request.FILES['document'])
             columns = getColumnsFromCsvFile(filePathAfterUpload)
             typeColumns = getTypeOfColumnsFromCsvFile(filePathAfterUpload)
-
             dictionarieWithColumnsAndTypes = makeDicWithColumnType(columns,typeColumns)
-
-            createTableForEtl('TESTE_CSV',dictionarieWithColumnsAndTypes)
-            
-            importCsvFileInTable(filePathAfterUpload, 'TESTE_CSV')
+            createTableForEtl(nameFile,dictionarieWithColumnsAndTypes)
+            importCsvFileInTable(filePathAfterUpload, nameFile)
             # print(columns)
             # print(typeColumns)
             return render(request, 'application/input/inputfile.html', {
@@ -36,8 +32,11 @@ def inputCsvFile(request):
 def saveCsvFileAndReturnFilePath(file):
     fileSystem = FileSystemStorage()
     newName = fileSystem.save(file.name, file)
-    filePathAfterUpload = str(fileSystem.url(newName)[1:])
-    return filePathAfterUpload
+    # print('pasta: ',str(fileSystem.url))
+    # filePathAfterUpload = str(fileSystem.url(newName)[1:])
+    # print('pasta: ',fileSystem.path(newName))
+    return fileSystem.path(newName)
+    # return filePathAfterUpload
 
 def getSucessMessage():
     sucessMessage = 'Arquivo carregado com sucesso!'
@@ -46,3 +45,16 @@ def getSucessMessage():
 def getFailMessage():
     failMessage = {'message': 'Falha ao carregar arquivo'}
     return failMessage
+
+def formatFileName(name):
+    nameWithOutExtension = splitext(name)[0]
+
+    remove = [
+        '.',
+        ' ',
+        '-'
+    ]
+    for char in remove:
+        nameWithOutExtension = nameWithOutExtension.replace(char,'_')
+    nameWithOutExtension = nameWithOutExtension.lower()
+    return nameWithOutExtension
