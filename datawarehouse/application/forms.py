@@ -1,5 +1,5 @@
 from django import forms
-from application.models import TypeData
+from application.models import TypeData, csvFile
 
 class fileForm(forms.Form):
     file = forms.FileField()
@@ -14,3 +14,8 @@ class TypeDataForm(forms.ModelForm):
     class Meta:
         model = TypeData
         fields = ('typeSimple','typeDataBase')
+
+class csvForm(forms.ModelForm):
+    class Meta:
+        model = csvFile
+        fields = ['name','size','updated','withHeader']

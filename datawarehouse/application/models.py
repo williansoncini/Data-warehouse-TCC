@@ -77,3 +77,11 @@ class ColumnDataMart(models.Model):
     def __str__(self):
         return self.name
 
+class csvFile(models.Model):
+    name = models.CharField(max_length=250)
+    size = models.FloatField(default=0)
+    updated = models.DateTimeField(auto_now_add=True)
+    withHeader = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name

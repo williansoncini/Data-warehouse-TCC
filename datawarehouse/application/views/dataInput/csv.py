@@ -10,6 +10,7 @@ def inputCsvFile(request):
     if request.method == 'POST':
         try:
             nameFile = formatFileName(str(request.FILES['document']))
+
             filePathAfterUpload = saveCsvFileAndReturnFilePath(request.FILES['document'])
             columns = getColumnsFromCsvFile(filePathAfterUpload)
             typeColumns = getTypeOfColumnsFromCsvFile(filePathAfterUpload)
