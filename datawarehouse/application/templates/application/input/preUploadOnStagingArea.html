@@ -1,0 +1,30 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    <h1>Você esta na pré Staging area</h1>
+
+    {% if firstTwentyRows %}
+        <table>
+        {% for row in firstTwentyRows %}
+            <tr>
+               {% for column in row %}
+                    <td>{{column}}</td>
+               {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            {{checkbox}}
+            {% comment %} <label for="checkbox"> Importar dados considerando o cabeçalho do arquivo? </label>
+            <input type="checkbox" name="checkbox" id="checkbox" value='on'> {% endcomment %}
+        </div>
+        <div>
+            <button type="submit">enviar</button>
+        </div>
+    </form>
+
+{% endblock content %}

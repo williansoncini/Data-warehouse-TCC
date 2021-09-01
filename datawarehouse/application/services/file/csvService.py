@@ -1,4 +1,3 @@
-from ..database.stagingArea import connect
 import csv
 from ast import literal_eval
 
@@ -51,7 +50,7 @@ def getTypeOfColumnsFromCsvFile(filePathAfterUpload):
         print('Erro ao pegar lista de tipos das colunas')
 
 def getTypeData(data):
-    print(data)
+    # print(data)
     try:
         dataAfterTratament = literal_eval(data)
         return type(dataAfterTratament)
@@ -89,8 +88,39 @@ def parseTypeDataToSqlTypeData(typeDatas):
 def makeDicWithColumnType(columns, types):
     dictionarie = {}
     for index, column in enumerate(columns):
-        print('dicionario coluna: {}'.format(column))
-        print('dicionario tipo: {}'.format(types[index]))
+        # print('dicionario coluna: {}'.format(column))
+        # print('dicionario tipo: {}'.format(types[index]))
         dictionarie[column] = types[index]
 
     return dictionarie
+
+# def handleUploadedFile(file):
+#     with open(,'r') as file:
+def getFirstTwentyLinesFromFile(filePath):
+    data = []
+    with open(filePath,'r') as file:
+        csvFile = csv.reader(file, delimiter=';')
+        for index, line in enumerate(csvFile):
+            if index < 20:
+                data.append(line)
+            else:
+                break
+
+    # parseDataToList(data)
+    # print(data[0])
+    return data
+
+def makeFakeColumnsFromCsvFile(filePathAfterUpload):
+    try:
+        with open(filePathAfterUpload,'r') as file:
+            csvFile = csv.reader(file, delimiter=';')
+            columns = list(csvFile)[0]
+
+            listColumns = []
+            for index, column in enumerate(columns):
+                listColumns.append('column_{}'.format(index+1))
+
+        return listColumns
+    except Exception as e:
+        print('Erro ao pegar lista de colunas')
+        print(e)

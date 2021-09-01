@@ -36,11 +36,22 @@ def createTableForEtl(nameTable, columnsAndTypes):
     cur.close()
     conn.close()
 
-def importCsvFileInTable(filePath, nameTable):
+def importCsvFileInTableWithHeader(filePath, nameTable):
     conn = connect()
     cur = conn.cursor()
     file = open(filePath, 'r')
-    # cur.copy_expert("COPY {} FROM STDOUT WITH CSV HEADER DELIMITER ';'".format(nameTable),file)
+    cur.copy_expert("COPY {} FROM STDOUT WITH CSV HEADER DELIMITER ';'".format(nameTable),file)
+    # cur.copy_from(file,nameTable,sep=';')
+    cur.close()
+
+    conn.commit()
+    print('conexão sendo fechada!')
+    conn.close()  
+
+def importCsvFileInTableWithOutHeader(filePath, nameTable):
+    conn = connect()
+    cur = conn.cursor()
+    file = open(filePath, 'r')
     cur.copy_from(file,nameTable,sep=';')
     cur.close()
 

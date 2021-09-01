@@ -1,8 +1,11 @@
 from django import forms
-from application.models import TypeData, csvFile
+from application.models import ExpressionColumnStagingArea, TypeData, CsvFile
 
-class fileForm(forms.Form):
-    file = forms.FileField()
+class inputFileForm(forms.Form):
+    file = forms.FileField(widget=forms.FileInput(attrs={'class':'teste'}))
+
+class CheckBoxForm(forms.Form):
+    checkbox = forms.BooleanField(label='Importar dados considerando o cabeçalho do arquivo?',required=False)
 
 class QueryForm(forms.Form):
     # query = forms.CharField()
@@ -17,5 +20,10 @@ class TypeDataForm(forms.ModelForm):
 
 class csvForm(forms.ModelForm):
     class Meta:
-        model = csvFile
-        fields = ['name','size','updated','withHeader']
+        model = CsvFile
+        fields = ['name','size','withHeader']
+
+class ExpressionStagingAreaForm(forms.ModelForm):
+    class Meta:
+        model = ExpressionColumnStagingArea
+        fields = ['table','column','expression']

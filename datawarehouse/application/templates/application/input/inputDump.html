@@ -1,6 +1,6 @@
 {% extends 'application/base.html' %}
 
-{% block fileDumpInput %}
+{% block content %}
     <h1>DUMP</h1>
     <form method="post" enctype='multipart/form-data'>
         {% csrf_token %}
@@ -14,5 +14,5 @@
 
     <a href="http://localhost:8000/application"> Voltar </a>
 
-{% endblock fileDumpInput %}
+{% endblock content %}
 

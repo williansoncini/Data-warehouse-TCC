@@ -1,6 +1,6 @@
 {% extends 'application/base.html' %}
 
-{% block queryInput %}
+{% block content %}
     <h1>QUERY</h1>
     <form method="get" >
         {% csrf_token %}
@@ -32,4 +32,4 @@
     {% endif %}
 
     <a href="http://localhost:8000/application"> Voltar </a>
-{% endblock queryInput %}
+{% endblock content %}

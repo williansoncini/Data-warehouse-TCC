@@ -1,6 +1,6 @@
-import abc
 from django.db import models
-from django.db.models.deletion import CASCADE
+from django.db.models.fields import CharField, TextField
+from django.db.models.fields.related import ForeignKey
 
 # Create your models here.
 class Datamart(models.Model):
@@ -77,11 +77,41 @@ class ColumnDataMart(models.Model):
     def __str__(self):
         return self.name
 
-class csvFile(models.Model):
+class CsvFile(models.Model):
     name = models.CharField(max_length=250)
-    size = models.FloatField(default=0)
-    updated = models.DateTimeField(auto_now_add=True)
-    withHeader = models.BooleanField(default=False)
+    size = models.FloatField()
+    uploadDate = models.DateTimeField(auto_now_add=True)
+    withHeader = models.BooleanField()
 
     def __str__(self):
         return self.name
+
+class TemporaryFile(models.Model):
+    name = models.CharField(max_length=250)
+    filePath = models.TextField()
+    size = models.FloatField()
+
+    class Meta:
+        ordering = ('-name',)
+
+    def __str__(self):
+        return self.name
+
+class TableStagingArea(models.Model):
+    tableName = CharField(max_length=250)
+    
+    def __str__(self):
+        return self.tableName
+
+class ColumnStagingArea(models.Model):
+    table = ForeignKey(TableStagingArea, on_delete=models.CASCADE,related_name='stagingarea_table_column')
+    name = CharField(max_length=250)
+    typeColumn = CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class ExpressionColumnStagingArea(models.Model):
+    table = ForeignKey(TableStagingArea, on_delete=models.CASCADE,related_name='stagingarea_table_expression')
+    column = ForeignKey(ColumnStagingArea, on_delete=models.CASCADE, related_name='stagingarea_column_expression')
+    expression = TextField()
