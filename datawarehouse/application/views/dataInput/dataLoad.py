@@ -1,4 +1,3 @@
-from django.http import request
 from application.forms import CheckBoxForm
 from application.services.database.stagingArea import createTableForEtl, importCsvFileInTableWithHeader,importCsvFileInTableWithOutHeader
 from application.models import ColumnStagingArea, TableStagingArea, TemporaryFile, CsvFile
@@ -21,7 +20,7 @@ def showDataFromFile(request):
         (tableStagingArea,__) = TableStagingArea.objects.get_or_create(tableName=file.name)
         
         for index, column in enumerate(columns):
-            columnStagingArea = ColumnStagingArea.objects.get_or_create(
+            (columnStagingArea,_) = ColumnStagingArea.objects.get_or_create(
                 table=tableStagingArea,
                 name=column,
                 typeColumn=typeColumns[index])

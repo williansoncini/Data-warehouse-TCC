@@ -16,5 +16,5 @@ urlpatterns = [
     path('input/dump/', dump.inputDumpFile, name='dump_input'),
     path('input/preImportFile/', dataLoad.showDataFromFile, name='data_load'),
     path('input/stagingArea', stagingArea.showTableDetail, name='stagingArea'),
-    path(r'^modal/', stagingArea.modal, name='modal'),
+    path('input/stagingArea/expression/<int:table_id>/<int:column_id>/', stagingArea.addExpression, name='add_expression')
 ]

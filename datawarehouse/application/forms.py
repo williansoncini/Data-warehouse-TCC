@@ -1,5 +1,5 @@
 from django import forms
-from application.models import ExpressionColumnStagingArea, TypeData, CsvFile
+from application.models import TypeData, CsvFile
 
 class inputFileForm(forms.Form):
     file = forms.FileField(widget=forms.FileInput(attrs={'class':'teste'}))
@@ -23,7 +23,7 @@ class csvForm(forms.ModelForm):
         model = CsvFile
         fields = ['name','size','withHeader']
 
-class ExpressionStagingAreaForm(forms.ModelForm):
-    class Meta:
-        model = ExpressionColumnStagingArea
-        fields = ['table','column','expression']
+# class ExpressionStagingAreaForm(forms.ModelForm):
+    # class Meta:
+    #     model = ExpressionColumnStagingArea
+    #     fields = ['table','column','expression']

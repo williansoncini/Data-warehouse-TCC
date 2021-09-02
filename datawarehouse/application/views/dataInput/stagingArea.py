@@ -1,6 +1,6 @@
-from application.forms import ExpressionStagingAreaForm
+# from application.forms import ExpressionStagingAreaForm
 from application.services.database.stagingArea import connect
-from application.models import ColumnStagingArea, ExpressionColumnStagingArea, TableStagingArea
+from application.models import ColumnStagingArea,TableStagingArea
 from django.shortcuts import render
 
 def showTableDetail(request):
@@ -8,12 +8,6 @@ def showTableDetail(request):
         tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
         columnsStagingArea = ColumnStagingArea.objects.filter(table=tableStagingArea.id)
 
-        dictionarieWithColumnsAndTypes = {}
-        listColumns=[]
-        for column in columnsStagingArea:
-            dictionarieWithColumnsAndTypes[column.name] = column.typeColumn
-            listColumns.append(column.name)
-        
         conn = connect()
         cur = conn.cursor()
         cur.execute('SELECT * FROM {}'.format(tableStagingArea.tableName))
@@ -21,24 +15,19 @@ def showTableDetail(request):
         cur.close()
         conn.close()
 
-        expressionForms = []
-        expressionsColumnsStagingArea = ExpressionColumnStagingArea.objects.filter(table=tableStagingArea.id)
-        for expression in expressionsColumnsStagingArea:
-            form = ExpressionStagingAreaForm()
-            form.table = expression.table
-            form.column = expression.column
-            form.expression = expression.expression
-            expressionForms.append(form)            
-
         return render(request, 'application/input/stagingArea.html',{
             'nameTable':tableStagingArea.tableName,
-            'dictionarieWithColumnsAndTypes':dictionarieWithColumnsAndTypes,
-            'listColumns': listColumns,
-            'data':data,
-            'expressionForms': expressionForms
+            'columnsStagingArea':columnsStagingArea,
+            # 'dictionarieWithColumnsAndTypes':dictionarieWithColumnsAndTypes,
+            # 'listColumns': listColumns,
+            'data':data
+            # 'expressionsColumnsStagingArea': expressionsColumnsStagingArea,
+            # 'expressionForm': expressionForm
         })
 
-def modal(request):
-    print('***************************passei')
-    return render(request, 'application/input/modal.html')
+def addExpression(request, table_id, column_id):
+    print(table_id)
+    print(column_id)
+    return render(request, 'application/input/expression.html')
+
 

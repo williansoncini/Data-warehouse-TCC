@@ -106,12 +106,20 @@ class TableStagingArea(models.Model):
 class ColumnStagingArea(models.Model):
     table = ForeignKey(TableStagingArea, on_delete=models.CASCADE,related_name='stagingarea_table_column')
     name = CharField(max_length=250)
-    typeColumn = CharField(max_length=100)
+    TYPES_COLUMN = (
+        ('INT','INT'),
+        ('VARCHAR','VARCHAR'),
+        ('FLOAT','FLOAT'),
+    )
+    typeColumn = CharField(max_length=30,choices=TYPES_COLUMN)
+    TYPES_EXPRESSION = (
+        ('UPPER','UPPER'),
+        ('CONCAT','CONCAT'),
+        ('CASE','CASE'),
+        ('SUM','SUM')
+    )
+    typeExpression = CharField(max_length=30,choices=TYPES_EXPRESSION, null=True)
+    expression = TextField(null=True)
 
     def __str__(self):
         return self.name
-
-class ExpressionColumnStagingArea(models.Model):
-    table = ForeignKey(TableStagingArea, on_delete=models.CASCADE,related_name='stagingarea_table_expression')
-    column = ForeignKey(ColumnStagingArea, on_delete=models.CASCADE, related_name='stagingarea_column_expression')
-    expression = TextField()

@@ -2,22 +2,23 @@
 
 {% block content %}
     <h1>Staging Area</h1>
-    
+
     {% if nameTable %}
         <h1>TABLE</h1>
         <table border=1>
-            <caption> {{nameTable}} </caption>
+            {% comment %} <caption> {{nameTable}} </caption> {% endcomment %}
             <tr>
                 <th>COLUMN</th>
                 <th>TYPE</th>
                 <th>EXPRESSION</th>
             </tr>
-            {% for key,value in dictionarieWithColumnsAndTypes.items %}
+            {% for column in columnsStagingArea %}
             <tr>
-                <td>{{key}}</td>
-                <td>{{value}}</td>
-                {% comment %} <td> <button type="" data-bs-toggle='modal' data-bs-target='#modalTest' id="{{key}}" onclick="setClassToForms('{{key}}');">Adicionar </button> </td> {% endcomment %}
-                <td> <a class="btn btn-info open-modal" data-url="{% url 'application:modal' %}">Edit</a> </td>
+                <td>{{column.name}}</td>
+                <td>{{column.typeColumn}}</td>
+                <td>{{column.expression}}</td>
+                <td><button id='column_{{column.id}}' onClick="location.href='{% url 'application:add_expression' column.table_id column.id %}'">edit</button></td>
+                {% comment %} <td><button id='column_{{column.id}}' onClick="location.href='{% url 'application:add_expression' 1 1 %}'">edit</button></td> {% endcomment %}
             </tr>
             {% endfor %}
         </table>
@@ -28,12 +29,12 @@
 
     {% if data %}
         <table border=1>
-            <caption>{{nameTable}}</caption>
-            <tr>
+            {% comment %} <caption>{{nameTable}}</caption> {% endcomment %}
+            {% comment %} <tr>
                 {% for column in listColumns %}
                     <th> {{column}} </th>
                 {% endfor %}
-            </tr>
+            </tr> {% endcomment %}
             {% for row in data %}
              <tr>
                 {% for cedule in row %}
@@ -42,50 +43,10 @@
             </tr>            
             {% endfor %}
         </table>
-    
-    <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
     {% endif %}
 
     <script>
-        var modalDiv = $("#modal-div");
 
-        $('.open-modal').on('click', function(){
-            console.log('teste de chamada')
-            $.ajax({
-                url:$(this).attr('data-url'),
-                sucess: function(data){
-                    modalDiv.html(data);
-                    $("#modalTest").modal();
-                }
-            });
-        });
-
-        console.log(modalDiv);
+    
     </script>
 {% endblock content %}
