@@ -15,8 +15,7 @@ def showDataFromFile(request):
             columns = getColumnsFromCsvFile(file.filePath)
         else:
             columns = makeFakeColumnsFromCsvFile(file.filePath)
-        
-        
+
         (tableStagingArea,__) = TableStagingArea.objects.get_or_create(tableName=file.name)
         
         for index, column in enumerate(columns):
@@ -26,7 +25,6 @@ def showDataFromFile(request):
                 typeColumn=typeColumns[index])
 
         request.session['pkTableStagingArea'] = tableStagingArea.id
-
         dictionarieWithColumnsAndTypes = makeDicWithColumnType(columns,typeColumns)
 
         # request.session['dictionarieWithColumnsAndTypes'] = dictionarieWithColumnsAndTypes
@@ -50,12 +48,6 @@ def showDataFromFile(request):
             'firstTwentyRows':firstTwentyRows,
             'checkbox': checkBox})
 
-def showDataFromTable(request):
-    if request.method == 'POST':
-        print('POST')
-    else:
-        pass
-
 def saveCSVFileInDataBase(name, size, withHeader):
     csvFile = CsvFile(
         name=name,
@@ -63,5 +55,3 @@ def saveCSVFileInDataBase(name, size, withHeader):
         withHeader=withHeader
     )
     csvFile.save()
-    
-

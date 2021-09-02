@@ -1,5 +1,6 @@
+from functools import total_ordering
 from django import forms
-from application.models import TypeData, CsvFile
+from application.models import ColumnStagingArea, TypeData, CsvFile
 
 class inputFileForm(forms.Form):
     file = forms.FileField(widget=forms.FileInput(attrs={'class':'teste'}))
@@ -23,7 +24,7 @@ class csvForm(forms.ModelForm):
         model = CsvFile
         fields = ['name','size','withHeader']
 
-# class ExpressionStagingAreaForm(forms.ModelForm):
-    # class Meta:
-    #     model = ExpressionColumnStagingArea
-    #     fields = ['table','column','expression']
+class ColumnStagingAreaForm(forms.ModelForm):
+    class Meta:
+        model = ColumnStagingArea
+        fields = ['name','typeColumn','typeExpression','expression']

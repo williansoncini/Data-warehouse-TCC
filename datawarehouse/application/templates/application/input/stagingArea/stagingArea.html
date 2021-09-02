@@ -3,10 +3,9 @@
 {% block content %}
     <h1>Staging Area</h1>
 
-    {% if nameTable %}
-        <h1>TABLE</h1>
+    {% if tableStagingArea %}
+        <h1>{{tableStagingArea}}</h1>
         <table border=1>
-            {% comment %} <caption> {{nameTable}} </caption> {% endcomment %}
             <tr>
                 <th>COLUMN</th>
                 <th>TYPE</th>
@@ -17,24 +16,18 @@
                 <td>{{column.name}}</td>
                 <td>{{column.typeColumn}}</td>
                 <td>{{column.expression}}</td>
-                <td><button id='column_{{column.id}}' onClick="location.href='{% url 'application:add_expression' column.table_id column.id %}'">edit</button></td>
-                {% comment %} <td><button id='column_{{column.id}}' onClick="location.href='{% url 'application:add_expression' 1 1 %}'">edit</button></td> {% endcomment %}
+                <td><button id='column_{{column.id}}' onClick="location.href='{% url 'application:updateStagingArea' tableStagingArea.pk column.id %}'" >Edit</button></td>            
+                <td><button id='column_{{column.id}}' onClick="location.href='{% url 'application:deleteStagingArea' tableStagingArea.pk column.id %}'" >Delete</button></td>            
             </tr>
             {% endfor %}
         </table>
-        <button type="submit">Add column</button>
+        <button type="submit" onclick="location.href='{% url 'application:createColumnStagingArea' tableStagingArea.pk %}'">Add column</button>
     {% endif %}
 
     <h1>Datas</h1>
 
     {% if data %}
         <table border=1>
-            {% comment %} <caption>{{nameTable}}</caption> {% endcomment %}
-            {% comment %} <tr>
-                {% for column in listColumns %}
-                    <th> {{column}} </th>
-                {% endfor %}
-            </tr> {% endcomment %}
             {% for row in data %}
              <tr>
                 {% for cedule in row %}
@@ -46,7 +39,5 @@
     {% endif %}
 
     <script>
-
-    
     </script>
 {% endblock content %}
