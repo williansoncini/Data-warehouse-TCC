@@ -37,7 +37,7 @@ def showDataFromFile(request):
             importCsvFileInTableWithOutHeader(file.filePath,file.name)
 
         saveCSVFileInDataBase(file.name, file.size, inputDataWithCsvHeader)
-        return redirect('../stagingArea')
+        return redirect('application:stagingArea')
         # return render(request, 'application/input/preUploadOnStagingArea.html')
     else:
         temporaryFile = TemporaryFile.objects.get(pk=request.session['tempFilePk'])

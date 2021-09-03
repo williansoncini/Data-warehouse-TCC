@@ -28,3 +28,7 @@ class ColumnStagingAreaForm(forms.ModelForm):
     class Meta:
         model = ColumnStagingArea
         fields = ['name','typeColumn','typeExpression','expression']
+
+class TableStagingAreaForm(forms.ModelForm):
+    class Meta:
+        fields = '__all__'

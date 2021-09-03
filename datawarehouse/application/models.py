@@ -99,6 +99,8 @@ class TemporaryFile(models.Model):
 
 class TableStagingArea(models.Model):
     tableName = CharField(max_length=250)
+    statementCreateTable = TextField(null=True)
+    statementSelect = TextField(null=True)
     
     def __str__(self):
         return self.tableName
