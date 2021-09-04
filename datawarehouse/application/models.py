@@ -114,14 +114,6 @@ class ColumnStagingArea(models.Model):
         ('FLOAT','FLOAT'),
     )
     typeColumn = CharField(max_length=30,choices=TYPES_COLUMN)
-    TYPES_EXPRESSION = (
-        ('UPPER','UPPER'),
-        ('CONCAT','CONCAT'),
-        ('CASE','CASE'),
-        ('SUM','SUM')
-    )
-    typeExpression = CharField(max_length=30,choices=TYPES_EXPRESSION, null=True)
-    expression = TextField(null=True)
 
     def __str__(self):
         return self.name

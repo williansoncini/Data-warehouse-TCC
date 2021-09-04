@@ -27,7 +27,7 @@ class csvForm(forms.ModelForm):
 class ColumnStagingAreaForm(forms.ModelForm):
     class Meta:
         model = ColumnStagingArea
-        fields = ['name','typeColumn','typeExpression','expression']
+        fields = ['name','typeColumn']
 
 class TableStagingAreaForm(forms.ModelForm):
     class Meta:

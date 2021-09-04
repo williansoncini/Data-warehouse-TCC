@@ -7,22 +7,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <title>Data warehouse</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 <body>
-    <div class='sideMenu'>
-        <ul>
-            <li>IMPORT</li>
-            <ul>
-                <li><a href="http://localhost:8000/application/input/csv"> CSV FILE </a></li>
-                <li><a href="http://localhost:8000/application/input/dump"> DUMP FILE </a></li>
-                <li><a href="http://localhost:8000/application/input/query"> QUERY STATEMENT </a></li>
+    <section class='d-flex'>
+        <div class="flex-shrink-0 p-3 bg-white side-bar">
+            <ul class="list-unstyled">
+                <li class="mb-1">
+                    <button class='btn btn-toggle align-items-center rounded collapsed'  data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                        Import
+                    </button>
+                    <div class='collapse show' id='home-collapse'>
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li class='link-dark rounded'><a href="http://localhost:8000/application/input/csv"> Csv </a></li>
+                            <li class='link-dark rounded'><a href="http://localhost:8000/application/input/dump"> Dump </a></li>
+                            <li class='link-dark rounded'><a href="http://localhost:8000/application/input/query"> Query </a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="border-top my-3"></li>
             </ul>
-        </ul>
-    </div>
-    <div class='content'>
-        {% block content %}
-        {% endblock content %}
-    </div>
+        </div>
+        <div class='content'>
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 </body>

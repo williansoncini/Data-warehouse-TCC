@@ -2,31 +2,31 @@
 
 {% block content %}
     <h1>Staging Area</h1>   
-        {% if tableStagingArea %}
-            <h1>{{tableStagingArea}}</h1>
-            <table border=1>
-                <tr>
-                    <th>COLUMN</th>
-                    <th>TYPE</th>
-                    <th>EXPRESSION</th>
-                </tr>
-                {% for column in columnsStagingArea %}
-                <tr>
-                    <td>{{column.name}}</td>
-                    <td>{{column.typeColumn}}</td>
-                    <td>{{column.expression}}</td>
-                    <td><button id='column_{{column.id}}' onClick="location.href='{% url 'application:updateStagingArea' tableStagingArea.pk column.id %}'" >Edit</button></td>            
-                    <td><button id='column_{{column.id}}' onClick="location.href='{% url 'application:deleteStagingArea' tableStagingArea.pk column.id %}'" >Delete</button></td>            
-                </tr>
-                {% endfor %}
-            </table>
-            <button onclick="location.href='{% url 'application:createColumnStagingArea' tableStagingArea.pk %}'">Add column</button>
-        {% endif %}
+    <h3>{{tableStagingArea}}</h3>
+    <table class='table table-striped table-dark'>
+        <thead >
+            <tr>
+                <th scope="col">COLUMN</th>
+                <th scope="col">TYPE</th>
+                <th scope="col">ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for column in columnsStagingArea %}
+            <tr>
+                <td>{{column.name}}</td>
+                <td>{{column.typeColumn}}</td>
+                <td><button class="btn btn-primary" id='column_{{column.id}}' onClick="location.href='{% url 'application:deleteStagingArea' tableStagingArea.pk column.id %}'" >Delete</button></td>            
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button class="btn btn-primary" onclick="location.href='{% url 'application:createColumnStagingArea' tableStagingArea.pk %}'">Add column</button>
 
-        <h1>Datas</h1>
+        <h3>Datas</h3>
 
         {% if data %}
-            <table border=1>
+            <table class='table table-striped table-dark'>
                 {% for row in data %}
                 <tr>
                     {% for cedule in row %}
@@ -37,7 +37,7 @@
             </table>
         {% endif %}
 
-        {% if statementCreateTable %}
+        {% comment %} {% if statementCreateTable %}
         <div>
             <code>
                 {{statementCreateTable}}
@@ -51,11 +51,11 @@
                     {{statementSelect}}
                 </code>
             </div>
-        {% endif %}
+        {% endif %} {% endcomment %}
 
     <form method='post'>
         {% csrf_token %}
-        <input type='submit' name='Enviar'/>
+        <button class="btn btn-success" type="submit">Confirm</button>
     </form>
 
 {% endblock content %}

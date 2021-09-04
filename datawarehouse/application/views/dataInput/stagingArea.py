@@ -41,9 +41,7 @@ def updateColumnStagingArea(request, table_id, column_id):
         columnStagingArea = ColumnStagingArea.objects.get(table_id=table_id, pk=column_id)
         form = ColumnStagingAreaForm(initial={
             'name': columnStagingArea.name,
-            'typeColumn':columnStagingArea.typeColumn,
-            'typeExpression': columnStagingArea.typeExpression,
-            'expression':columnStagingArea.expression
+            'typeColumn':columnStagingArea.typeColumn
         })
         return render(request, 'application/input/stagingArea/column/update.html',{
             'form':form
@@ -54,8 +52,6 @@ def updateColumnStagingArea(request, table_id, column_id):
         if form.is_valid():
             columnStagingArea.name = form.cleaned_data['name']
             columnStagingArea.typeColumn = form.cleaned_data['typeColumn']
-            columnStagingArea.typeExpression = form.cleaned_data['typeExpression']
-            columnStagingArea.expression = form.cleaned_data['expression']
 
             columnStagingArea.save()
             return redirect('application:stagingArea')
@@ -87,11 +83,8 @@ def createColumnStagingArea(request, table_id):
             columnStagingArea = ColumnStagingArea(
                 table_id = table_id,
                 name = form.cleaned_data['name'],
-                typeColumn = form.cleaned_data['typeColumn'],
-                typeExpression = form.cleaned_data['typeExpression'],
-                expression = form.cleaned_data['expression']
+                typeColumn = form.cleaned_data['typeColumn']
             )
             columnStagingArea.save()
 
             return redirect('application:stagingArea')
-            

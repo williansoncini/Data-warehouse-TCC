@@ -63,31 +63,10 @@ def makeSelectStatement(nameTable, Columns):
     statement = 'SELECT\n' 
     lenColumns = len(Columns)
     for index, column in enumerate(Columns):
-        if index +1 == lenColumns:
-            if column.typeExpression:
-                if column.typeExpression == 'UPPER':
-                    statement += '  UPPER({}) AS {}\n'.format(column.name, column.name)
-                elif column.typeExpression == 'CONCAT':
-                    statement += '  CONCAT({}) AS {}\n'.format(column.expression, column.name)
-                elif column.typeExpression == 'SUM':
-                    statement += '  SUM({}) AS {}\n'.format(column.expression, column.name)
-                elif column.typeExpression == 'CASE':
-                    statement += '  CASE({}) AS {}\n'.format(column.expression, column.name)
-            else:
+        if index+1 == lenColumns:
                 statement += '  {}\n'.format(column.name)
         else:
-            if column.typeExpression:
-                if column.typeExpression == 'UPPER':
-                    statement += '  UPPER({}) AS {},\n'.format(column.name, column.name)
-                elif column.typeExpression == 'CONCAT':
-                    statement += '  CONCAT({}) AS {},\n'.format(column.expression, column.name)
-                elif column.typeExpression == 'SUM':
-                    statement += '  SUM({}) AS {},\n'.format(column.expression, column.name)
-                elif column.typeExpression == 'CASE':
-                    statement += '  CASE({}) AS {},\n'.format(column.expression, column.name)
-            else:
                 statement += '  {},\n'.format(column.name)
-     
     statement += 'FROM \n   {}'.format(nameTable)
     return statement
 
