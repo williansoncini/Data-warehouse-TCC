@@ -11,7 +11,7 @@
 </head>
 <body>
     <section class='d-flex'>
-        <div class="flex-shrink-0 p-3 bg-white side-bar">
+        <div class="flex-shrink-0 p-3 bg-white side-bar border rounded">
             <ul class="list-unstyled">
                 <li class="mb-1">
                     <button class='btn btn-toggle align-items-center rounded collapsed'  data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
@@ -28,7 +28,7 @@
                 <li class="border-top my-3"></li>
             </ul>
         </div>
-        <div class='content'>
+        <div class='content border rounded bg-white'>
             {% block content %}
             {% endblock content %}
         </div>

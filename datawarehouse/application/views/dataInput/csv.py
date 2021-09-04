@@ -1,5 +1,5 @@
 from application.models import TemporaryFile
-from ...forms import inputFileForm
+# from ...forms import inputFileForm
 from os.path import splitext
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
@@ -20,21 +20,21 @@ def inputCsvFile(request):
     typeColumns = []
     if request.method == 'POST':
         try:
-            form = inputFileForm(request.POST, request.FILES)
-            if form.is_valid():
-                nameFile = formatFileName(str(request.FILES['file']))
-                filePathAfterUpload = saveCsvFileAndReturnFilePath(request.FILES['file'])
-                fileSize =  getSizeFile(filePathAfterUpload)
-                (temporaryFile,__) = TemporaryFile.objects.get_or_create(name=nameFile, filePath=filePathAfterUpload, size=fileSize)
-                request.session['tempFilePk'] = temporaryFile.id
-            
-                return redirect('../preImportFile/')
+            # form = inputFileForm(request.POST, request.FILES)
+            # if form.is_valid():
+            nameFile = formatFileName(str(request.FILES['file']))
+            filePathAfterUpload = saveCsvFileAndReturnFilePath(request.FILES['file'])
+            fileSize =  getSizeFile(filePathAfterUpload)
+            (temporaryFile,__) = TemporaryFile.objects.get_or_create(name=nameFile, filePath=filePathAfterUpload, size=fileSize)
+            request.session['tempFilePk'] = temporaryFile.id
+        
+            return redirect('../preImportFile/')
         except OSError as err:
             print(err)
             return render(request, 'application/input/inputCsv.html', getFailMessage())
     else:    
-        form = inputFileForm()
-        return render(request, 'application/input/inputCsv.html', {'inputFileForm': form})
+        # form = inputFileForm()
+        return render(request, 'application/input/inputCsv.html')
 
 def saveCsvFileAndReturnFilePath(file):
     fileSystem = FileSystemStorage()

@@ -43,10 +43,10 @@ def showDataFromFile(request):
         temporaryFile = TemporaryFile.objects.get(pk=request.session['tempFilePk'])
         firstTwentyRows = getFirstTwentyLinesFromFile(temporaryFile.filePath)
 
-        checkBox = CheckBoxForm()
+        # checkBox = CheckBoxForm()
         return render(request, 'application/input/preUploadOnStagingArea.html', {
-            'firstTwentyRows':firstTwentyRows,
-            'checkbox': checkBox})
+            'firstTwentyRows':firstTwentyRows})
+            # 'checkbox': checkBox})
 
 def saveCSVFileInDataBase(name, size, withHeader):
     csvFile = CsvFile(

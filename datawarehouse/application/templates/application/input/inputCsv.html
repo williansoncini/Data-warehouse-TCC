@@ -1,17 +1,19 @@
 {% extends 'application/base.html' %}
 
 {% block content %}
-    <h1>CSV</h1>
-    {% if inputFileForm %}
-        <form method="POST" enctype="multipart/form-data">
-            {{inputFileForm.as_p}}
-            {% csrf_token %}
-            <button type="submit"> Carregar arquivo </button>
-        </form>
-    {% endif %}
+    <h3>CSV</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+            <label for="formFile" class="form-label">Input CSV here ✅ </label>
+            <input class="form-control" type="file" id="formFile" name="file" >
+        <button type="submit" class="btn btn-success mt-3"> Continue </button>
+        <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:home' %}'">
+            Cancel 
+        </button>
+    </form>
 
     {% if message %}
-        <h1>{{message}}</h1>
+        <h3>{{message}}</h3>
     {% endif %} 
 
     {% if columns %}
@@ -27,8 +29,6 @@
            <p>{{typeColumn}}</p>
         {% endfor %}
     {% endif %}
-
-    <a href="http://localhost:8000/application"> Voltar </a>
 
 {% endblock content %}
 

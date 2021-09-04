@@ -2,8 +2,8 @@ from functools import total_ordering
 from django import forms
 from application.models import ColumnStagingArea, TypeData, CsvFile
 
-class inputFileForm(forms.Form):
-    file = forms.FileField(widget=forms.FileInput(attrs={'class':'teste'}))
+# class inputFileForm(forms.Form):
+#     file = forms.FileField(widget=forms.FileInput(attrs={'class':'teste'}))
 
 class CheckBoxForm(forms.Form):
     checkbox = forms.BooleanField(label='Importar dados considerando o cabeçalho do arquivo?',required=False)
