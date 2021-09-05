@@ -34,7 +34,7 @@ def showTableDetail(request):
         tableStagingArea.statementSelect = makeSelectStatement(tableStagingArea.tableName, columnsStagingArea)
         tableStagingArea.save()
         
-        return HttpResponse('sucess')
+        return redirect('application:stagingArea-statement')
 
 def updateColumnStagingArea(request, table_id, column_id):
     if request.method == 'GET':
@@ -88,3 +88,17 @@ def createColumnStagingArea(request, table_id):
             columnStagingArea.save()
 
             return redirect('application:stagingArea')
+
+def statementView(request):
+    if request.method == 'GET':
+        tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
+        
+        return render(request,'application/input/stagingArea/statement.html',{
+            'statementCreateTable': tableStagingArea.statementCreateTable,
+            'statementSelect':tableStagingArea.statementSelect
+        })
+    else:
+        statementCreateTable = request.POST.get('teste','')
+        print('statement', statementCreateTable)
+        return HttpResponse('sucess!')
+        

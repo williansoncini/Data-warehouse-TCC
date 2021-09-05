@@ -19,6 +19,7 @@ urlpatterns = [
     path('input/stagingArea', stagingArea.showTableDetail, name='stagingArea'),
     path('input/stagingArea/expression/<int:table_id>/<int:column_id>/', stagingArea.updateColumnStagingArea, name='updateStagingArea'),
     path('input/stagingArea/delete/<int:table_id>/<int:column_id>/', stagingArea.deleteColumnStagingArea, name='deleteStagingArea'),
-    path('input/stagingArea/create/<int:table_id>/', stagingArea.createColumnStagingArea, name='createColumnStagingArea')
+    path('input/stagingArea/create/<int:table_id>/', stagingArea.createColumnStagingArea, name='createColumnStagingArea'),
+    path('input/stagingArea/statement', stagingArea.statementView, name='stagingArea-statement')
     # path('input/stagingArea/expression/<int:table_id>/<int:column_id>/', StagingAreaView.put, name='updateStagingArea')
 ]

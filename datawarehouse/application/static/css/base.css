@@ -3,10 +3,10 @@ body{
 }
 
 .side-bar {
-    margin: 1% 0 1% 1%;
+    height: 85vh;
+    position: fixed;
+    margin: 0px 0 8px 8px;
     width: 230px;
-
-    /* height: 95vh; */
 }
 
 .btn-toggle {
@@ -52,8 +52,17 @@ body{
   }
 
 .content{
-    padding: 1%;
-    margin: 1%;
-    width: 100vw;
-    /* height: 95vh; */
+    margin: 8px 15px 8px 250px;
+}
+
+.titles{
+    background: #212529;
+    color: white;
+    padding: 8px;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.center{
+    align-items: center;
 }
