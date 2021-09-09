@@ -1,4 +1,4 @@
-from application.forms import CheckBoxForm
+from django.core.files.storage import FileSystemStorage
 from application.services.database.stagingArea import createTableForEtl, importCsvFileInTableWithHeader,importCsvFileInTableWithOutHeader
 from application.models import ColumnStagingArea, TableStagingArea, TemporaryFile, CsvFile
 from django.shortcuts import redirect, render
@@ -8,7 +8,6 @@ def showDataFromFile(request):
     if request.method == 'POST':
         file = TemporaryFile.objects.get(pk=request.session['tempFilePk'])
         inputDataWithCsvHeader = bool(request.POST.get('checkbox',''))
-        # print('Valor do checkBox: ',inputDataWithCsvHeader)
         typeColumns = getTypeOfColumnsFromCsvFile(file.filePath)
 
         if inputDataWithCsvHeader:
@@ -27,9 +26,6 @@ def showDataFromFile(request):
         request.session['pkTableStagingArea'] = tableStagingArea.id
         dictionarieWithColumnsAndTypes = makeDicWithColumnType(columns,typeColumns)
 
-        # request.session['dictionarieWithColumnsAndTypes'] = dictionarieWithColumnsAndTypes
-        # request.session['nameTable'] = file.name
-
         createTableForEtl(file.name,dictionarieWithColumnsAndTypes)
         if inputDataWithCsvHeader:
             importCsvFileInTableWithHeader(file.filePath,file.name)
@@ -37,16 +33,17 @@ def showDataFromFile(request):
             importCsvFileInTableWithOutHeader(file.filePath,file.name)
 
         saveCSVFileInDataBase(file.name, file.size, inputDataWithCsvHeader)
+        print('NOME DO ARQUIVO:', file.filePath)
+        
+        deleteFile(file.filePath)
+
         return redirect('application:stagingArea')
-        # return render(request, 'application/input/preUploadOnStagingArea.html')
     else:
         temporaryFile = TemporaryFile.objects.get(pk=request.session['tempFilePk'])
         firstTwentyRows = getFirstTwentyLinesFromFile(temporaryFile.filePath)
 
-        # checkBox = CheckBoxForm()
         return render(request, 'application/input/preUploadOnStagingArea.html', {
             'firstTwentyRows':firstTwentyRows})
-            # 'checkbox': checkBox})
 
 def saveCSVFileInDataBase(name, size, withHeader):
     csvFile = CsvFile(
@@ -55,3 +52,7 @@ def saveCSVFileInDataBase(name, size, withHeader):
         withHeader=withHeader
     )
     csvFile.save()
+
+def deleteFile(filePath):
+    fileSystemStorage = FileSystemStorage()
+    fileSystemStorage.delete(filePath)

@@ -1,71 +1,55 @@
 {% extends 'application/base.html' %}
 
 {% block content %}
-    <h5 class='titles'>Staging Area - Columns </h5>  
-    <div class="input-group input-group-lg mb-3 ">
-        <span class="input-group-text" id="input"> Table name </span>
-        <input type="text" class="form-control" value="{{tableStagingArea}}">
-    </div> 
-    {% comment %} <h3>{{tableStagingArea}}</h3> {% endcomment %}
-    <table class='table table-sm table-striped table-dark'>
-        <thead >
-            <tr>
-                <th scope="col">COLUMN</th>
-                <th scope="col">TYPE</th>
-                <th scope="col">ACTIONS</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for column in columnsStagingArea %}
-            <tr>
-                <td>{{column.name}}</td>
-                <td>{{column.typeColumn}}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm" id='column_{{column.id}}' onClick="location.href='{% url 'application:updateStagingArea' tableStagingArea.pk column.id %}'" >Edit</button>  
-                    <button class="btn btn-danger btn-sm" id='column_{{column.id}}' onClick="location.href='{% url 'application:deleteStagingArea' tableStagingArea.pk column.id %}'" >Delete</button>
-                </td>            
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div class="d-flex justify-content-center">
-        <button class="btn btn-success align-items-center" onclick="location.href='{% url 'application:createColumnStagingArea' tableStagingArea.pk %}'">Add column</button>
-    </div>
-
-    <h5> Data visualization 🔍 </h5>
-
-    {% if data %}
-        <table class='table table-sm table-striped table-dark '>
-            {% for row in data %}
-            <tr>
-                {% for cedule in row %}
-                    <td> {{cedule}} </td>  
-                {% endfor %}
-            </tr>            
-            {% endfor %}
-        </table>
-    {% endif %}
-
-        {% comment %} {% if statementCreateTable %}
-        <div>
-            <code>
-                {{statementCreateTable}}
-            </code>
-        </div>
-        {% endif %}
-
-        {% if statementSelect %}
-            <div>
-                <code>
-                    {{statementSelect}}
-                </code>
-            </div>
-        {% endif %} {% endcomment %}
-
     <form method='post'>
         {% csrf_token %}
-        <button class="btn btn-success" type="submit"> Continue </button>
-        <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'"> Cancel </button>
+        <h5 class='titles'>Staging Area - Columns</h5>  
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" id="input"> Table name </span>
+            <input type="text" class="form-control" value="{{tableStagingArea.tableName}}" name="tableName">
+        </div> 
+
+        <h5>Columns ✅</h5>
+        <table class='table table-sm table-striped table-dark'>
+            <thead >
+                <tr>
+                    <th scope="col">COLUMN</th>
+                    <th scope="col">TYPE</th>
+                    <th scope="col">ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for column in columnsStagingArea %}
+                <tr>
+                    <td>{{column.name}}</td>
+                    <td>{{column.typeColumn}}</td>
+                    <td>
+                        <button type='button' class="btn btn-primary btn-sm" id='column_{{column.id}}' onClick="location.href='{% url 'application:updateStagingArea' tableStagingArea.pk column.id %}'" >Edit</button>  
+                        <button type='button' class="btn btn-danger btn-sm" id='column_{{column.id}}' onClick="location.href='{% url 'application:deleteStagingArea' tableStagingArea.pk column.id %}'" >Delete</button>
+                    </td>            
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-success align-items-center" onclick="location.href='{% url 'application:createColumnStagingArea' tableStagingArea.pk %}'">Add column</button>
+        </div>
+        
+        <h5> Data visualization 🔍 </h5>
+        {% if data %}
+            <table class='table table-sm table-striped table-dark '>
+                {% for row in data %}
+                <tr>
+                    {% for cedule in row %}
+                        <td> {{cedule}} </td>  
+                    {% endfor %}
+                </tr>            
+                {% endfor %}
+            </table>
+        {% endif %}
+        <button type="submit" class="btn btn-success">Continue</button>
+        <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:deleteTableStagingArea' tableStagingArea.id %}'">Cancel</button>
     </form>
 
 {% endblock content %}

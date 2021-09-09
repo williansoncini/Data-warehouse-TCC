@@ -9,9 +9,6 @@ def showTableDetail(request):
         tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
         columnsStagingArea = ColumnStagingArea.objects.filter(table=tableStagingArea.id)
 
-        statementCreateTable = makeStatementCreateTable(tableStagingArea.tableName, columnsStagingArea)
-        statementSelect = makeSelectStatement(tableStagingArea.tableName, columnsStagingArea)
-
         conn = connect()
         cur = conn.cursor()
         cur.execute('SELECT * FROM {}'.format(tableStagingArea.tableName))
@@ -22,43 +19,111 @@ def showTableDetail(request):
         return render(request, 'application/input/stagingArea/stagingArea.html',{
             'tableStagingArea':tableStagingArea,
             'columnsStagingArea':columnsStagingArea,
-            'data':data,
-            'statementSelect':statementSelect,
-            'statementCreateTable':statementCreateTable
+            'data':data
         })
     else:
         tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
         columnsStagingArea = ColumnStagingArea.objects.filter(table=tableStagingArea.id)
+        newTableName = request.POST.get('tableName','')
 
-        tableStagingArea.statementCreateTable = makeStatementCreateTable(tableStagingArea.tableName, columnsStagingArea)
-        tableStagingArea.statementSelect = makeSelectStatement(tableStagingArea.tableName, columnsStagingArea)
+        if tableStagingArea.tableName != newTableName:
+            conn = connect()
+            cur = conn.cursor()
+            cur.execute('ALTER TABLE IF EXISTS {} RENAME TO {};'.format(tableStagingArea.tableName,newTableName))
+            cur.close()
+            conn.commit()
+            conn.close()
+
+        tableStagingArea.tableName = newTableName
+        tableStagingArea.statementCreateTable = makeStatementCreateTable(newTableName, columnsStagingArea)
+        tableStagingArea.statementSelect = makeSelectStatement(newTableName, columnsStagingArea)
         tableStagingArea.save()
         
         return redirect('application:stagingArea-statement')
 
+def createColumnStagingArea(request, table_id):
+    if request.method == 'GET':
+        return render(request, 'application/input/stagingArea/column/create.html')
+    else:
+        tableStagingArea = TableStagingArea.objects.get(pk=table_id)
+
+        columnStagingArea = ColumnStagingArea(
+            table_id = table_id,
+            name = request.POST.get('columnName'),
+            typeColumn = request.POST.get('columnType')
+        )
+        columnStagingArea.save()
+
+        conn = connect()
+        cur = conn.cursor()
+        cur.execute('ALTER TABLE IF EXISTS {} ADD COLUMN {} {};'.format(tableStagingArea.tableName,
+            columnStagingArea.name,
+            columnStagingArea.typeColumn
+        ))
+        cur.close()
+        conn.commit()
+        conn.close()
+
+        return redirect('application:stagingArea')
+
 def updateColumnStagingArea(request, table_id, column_id):
     if request.method == 'GET':
         columnStagingArea = ColumnStagingArea.objects.get(table_id=table_id, pk=column_id)
-        form = ColumnStagingAreaForm(initial={
-            'name': columnStagingArea.name,
-            'typeColumn':columnStagingArea.typeColumn
-        })
+
         return render(request, 'application/input/stagingArea/column/update.html',{
-            'form':form
+            'columnName':columnStagingArea.name,
+            'columnType': columnStagingArea.typeColumn
         })
     else:
         columnStagingArea = get_object_or_404(ColumnStagingArea, pk=column_id, table_id=table_id)
-        form = ColumnStagingAreaForm(request.POST)
-        if form.is_valid():
-            columnStagingArea.name = form.cleaned_data['name']
-            columnStagingArea.typeColumn = form.cleaned_data['typeColumn']
+        tableStagingArea = TableStagingArea.objects.get(pk=table_id)
+        
+        newColumnName = request.POST.get('columnName')
+        newColumnType = request.POST.get('columnType')
 
+        if newColumnName != columnStagingArea.name:
+            conn = connect()
+            cur = conn.cursor()
+            cur.execute("ALTER TABLE IF EXISTS {} RENAME COLUMN {} TO {};".format(tableStagingArea.tableName,
+                columnStagingArea.name,
+                newColumnName
+            ))
+            cur.close()
+            conn.commit()
+            conn.close()
+
+            columnStagingArea.name = newColumnName
             columnStagingArea.save()
-            return redirect('application:stagingArea')
-        else:
-            return render(request, 'application/input/stagingArea/column/update.html',{
-                'form':form
-            })
+
+        print('tipo novo: ', newColumnType)
+        print('tipo antigo: ', columnStagingArea.typeColumn)
+        if newColumnType != columnStagingArea.typeColumn:
+            try:
+                conn = connect()
+                cur = conn.cursor()
+                cur.execute("ALTER TABLE IF EXISTS {} ALTER COLUMN {} TYPE {} USING {}::{};".format(tableStagingArea.tableName,
+                    columnStagingArea.name,
+                    newColumnType,
+                    columnStagingArea.name,
+                    newColumnType
+                    ))
+                print("ALTER TABLE IF EXISTS {} ALTER COLUMN {} TYPE {} USING {}::{};".format(tableStagingArea.tableName,
+                    columnStagingArea.name,
+                    columnStagingArea.typeColumn,
+                    columnStagingArea.name,
+                    columnStagingArea.typeColumn
+                    ))
+
+                cur.close()
+                conn.commit()
+                conn.close()
+         
+                columnStagingArea.typeColumn = newColumnType
+                columnStagingArea.save()
+            except:
+                print('Tipo de dados não suportado pela coluna')
+
+        return redirect('application:stagingArea')
 
 def deleteColumnStagingArea(request, table_id, column_id):
     if request.method == 'GET':
@@ -67,38 +132,49 @@ def deleteColumnStagingArea(request, table_id, column_id):
             'columnStagingArea':columnStagingArea
         })
     else:
+        tableStagingArea = TableStagingArea.objects.get(pk=table_id)
         columnStagingArea = ColumnStagingArea.objects.get(table_id=table_id, pk=column_id)
+
+        conn = connect()
+        cur = conn.cursor()
+        cur.execute("ALTER TABLE IF EXISTS {} DROP COLUMN {};".format(tableStagingArea.tableName,
+        columnStagingArea.name))
+        cur.close()
+        conn.commit()
+        conn.close()
+        
         columnStagingArea.delete()
         return redirect('application:stagingArea')
         
-def createColumnStagingArea(request, table_id):
-    if request.method == 'GET':
-        form = ColumnStagingAreaForm()
-        return render(request, 'application/input/stagingArea/column/create.html', {
-            'form':form
-        })
-    else:
-        form = ColumnStagingAreaForm(request.POST)
-        if form.is_valid():
-            columnStagingArea = ColumnStagingArea(
-                table_id = table_id,
-                name = form.cleaned_data['name'],
-                typeColumn = form.cleaned_data['typeColumn']
-            )
-            columnStagingArea.save()
+def deleteTableStagingArea(request, table_id):
+    tableStagingArea = TableStagingArea.objects.get(pk=table_id)
 
-            return redirect('application:stagingArea')
+    conn = connect()
+    cur = conn.cursor()
+    cur.execute("DROP TABLE IF EXISTS {};".format(tableStagingArea.tableName))
+    cur.close()
+    conn.commit()
+    conn.close()
+
+    tableStagingArea.delete()
+
+    return redirect ('application:home')
 
 def statementView(request):
     if request.method == 'GET':
         tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
         
+        print(tableStagingArea.statementCreateTable)
+
         return render(request,'application/input/stagingArea/statement.html',{
             'statementCreateTable': tableStagingArea.statementCreateTable,
-            'statementSelect':tableStagingArea.statementSelect
+            'statementSelect': tableStagingArea.statementSelect
         })
     else:
-        statementCreateTable = request.POST.get('teste','')
-        print('statement', statementCreateTable)
+        tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
+        tableStagingArea.statementCreateTable = request.POST.get('statementCreateTable','')
+        tableStagingArea.statementSelect = request.POST.get('statementSelect','')
+        tableStagingArea.save()
+
         return HttpResponse('sucess!')
         

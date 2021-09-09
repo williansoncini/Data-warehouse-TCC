@@ -1,10 +1,22 @@
 {% extends 'application/base.html' %}
 
 {% block content %}
+    <h5 class='titles'>Update column 🔄</h5>  
     <form method="post">
         {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Save</button>
-        <button type="reset" onClick="location.href='{% url 'application:stagingArea'%}'">Cancel</button>
+         <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" id="input">Column name</span>
+            <input type="text" class="form-control" value="{{columnName}}" name="columnName">
+        </div> 
+        <div class="mb-2">
+            <select class="form-select" aria-label="Default select example" name="columnType">
+                <option selected>Select column type</option>
+                <option value="INT">INT</option>
+                <option value="VARCHAR">VARCHAR</option>
+                <option value="FLOAT">FLOAT</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="reset" class="btn btn-danger  " onClick="location.href='{% url 'application:stagingArea'%}'">Cancel</button>
     </form>
 {% endblock content %}

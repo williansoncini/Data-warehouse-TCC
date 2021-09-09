@@ -13,14 +13,27 @@
     <div class="flex-shrink-0 p-3 bg-white side-bar border rounded">
         <ul class="list-unstyled">
             <li class="mb-1">
-                <button class='btn btn-toggle align-items-center rounded collapsed'  data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                <button class='btn btn-toggle align-items-center rounded collapsed'  data-bs-toggle="collapse" data-bs-target="#input-side-bar" aria-expanded="true">
                     Import
                 </button>
-                <div class='collapse show' id='home-collapse'>
+                <div class='collapse show' id='input-side-bar'>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li class='link-dark rounded'><a href="http://localhost:8000/application/input/csv"> Csv </a></li>
-                        <li class='link-dark rounded'><a href="http://localhost:8000/application/input/dump"> Dump </a></li>
-                        <li class='link-dark rounded'><a href="http://localhost:8000/application/input/query"> Query </a></li>
+                        <li class='link-dark rounded'><a href="{% url 'application:csv_input' %}"> Csv </a></li>
+                        <li class='link-dark rounded'><a href="{% url 'application:dump_input' %}"> Dump </a></li>
+                        <li class='link-dark rounded'><a href="{% url 'application:query_input' %}"> Query </a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="border-top my-3"></li>
+            <li class="mb-1">
+                <button class='btn btn-toggle align-items-center rounded collapsed' data-bs-toggle="collapse" data-bs-target="#datamart-side-bar" aria-expanded="true">
+                    Data mart
+                </button>
+                <div class='collapse show' id='datamart-side-bar'>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li class='link-dark rounded'><a href="{% url 'application:datamart-list' %}"> Data marts </a></li>
+                        <li class='link-dark rounded'><a href="#"> Tables </a></li>
+                        <li class='link-dark rounded'><a href="#"> Connection </a></li>
                     </ul>
                 </div>
             </li>

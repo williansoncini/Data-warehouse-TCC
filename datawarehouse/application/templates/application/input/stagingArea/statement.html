@@ -1,37 +1,20 @@
 {% extends 'application/base.html' %}
 
 {% block content %}
-        
-    <style type="text/css" media="screen">
-        .codeEditor{
-            height: 300px;
-            margin: 25px;
-        }
-    </style>
-
+    <h5 class='titles'>Staging Area - Query</h5>  
 
     <form action="" method="post">
         {% csrf_token %}
-        <div id="editorCreateTable" class="codeEditor">
-            <textarea name="teste" >
-                {{statementCreateTable}}
-            </textarea>
+        <h5>Create table 📄</h5>
+        <div>
+            <textarea name="statementCreateTable" class="text-edit" rows=7 >{{statementCreateTable}}</textarea>
         </div>
-        <div id="editorSelect" class="codeEditor">{{statementSelect}}</div>
-        <button type="submit">teste</button>
-    </form>
-
-    <script src="https://pagecdn.io/lib/ace/1.4.12/ace.js" crossorigin="anonymous" integrity="sha256-Q9hnBpgBFstzZOr+OKFOWZWfcF5nFXO8Qz48Nmndo6U=" ></script>
-    <script>
-        var editorCreateTable = ace.edit("editorCreateTable");
-        editorCreateTable.setTheme("ace/theme/monokai");
-        editorCreateTable.session.setMode("ace/mode/sql");
-        editorCreateTable.setShowPrintMargin(false);
-
-        {% comment %} var editorSelect = ace.edit("editorSelect");
-        editorSelect.setTheme("ace/theme/monokai");
-        editorSelect.session.setMode("ace/mode/sql");
-        editorSelect.setShowPrintMargin(false); {% endcomment %}
-    </script>
-    
+        <h5>Select table 🔍<i class='fas fa-table'></i> </h5>
+        <div>
+            <textarea name="statementSelect" class="text-edit " rows=10 data-toggle="tab">{{statementSelect}}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Continue</button>
+        <button type="reset" class="btn btn-primary">Clear</button>
+        <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'">Cancel</button>
+    </form>    
 {% endblock content %}
