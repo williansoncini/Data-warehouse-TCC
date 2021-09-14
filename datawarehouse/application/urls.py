@@ -1,6 +1,10 @@
+from application.views.datamart.datamart import DatamartView
+from application.models import Datamart
 from django.conf.urls import url
 from .views.dataInput import dataLoad, stagingArea
-from .views.datamart import datamart
+from .views.datamart.datamart import DatamartView
+from .views.datamart.datamartUpdate import DatamartUpdate
+# from .views.datamart import Datamart
 from .views.dataInput import csv,dump, query
 from .views.home import home
 from django.urls import path
@@ -19,5 +23,7 @@ urlpatterns = [
     path('input/stagingArea/deleteColumn/<int:table_id>/<int:column_id>/', stagingArea.deleteColumnStagingArea, name='deleteStagingArea'),
     path('input/stagingArea/createColumn/<int:table_id>/', stagingArea.createColumnStagingArea, name='createColumnStagingArea'),
     path('input/stagingArea/statement', stagingArea.statementView, name='stagingArea-statement'),
-    path('datamart/',datamart.show, name='datamart-list')
+    path('datamart/',DatamartView.as_view(), name='datamart-list'),
+    path('datamart/<int:datamart_id>/',DatamartUpdate.as_view(), name='datamart-detail')
+    # path('datamart/',datamart.show, name='datamart-list')
 ]

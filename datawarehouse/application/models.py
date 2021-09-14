@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.fields import CharField, TextField
+from django.db.models.fields import CharField, IntegerField, TextField
 from django.db.models.fields.related import ForeignKey
 
 # Create your models here.
@@ -13,6 +13,7 @@ class Datamart(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20,choices=STATUS_CHOICES,default='Active')
+    # usuario = models.CharField(max_length=250)
 
     class Meta:
         ordering = ('-name',)
@@ -117,3 +118,13 @@ class ColumnStagingArea(models.Model):
 
     def __str__(self):
         return self.name
+
+class DatamartConnection(models.Model):
+    username = CharField(max_length=50)
+    password = CharField(max_length=50)
+    ip = CharField(max_length=20)
+    port = IntegerField()
+    datamart_id = ForeignKey(Datamart, on_delete=models.CASCADE, related_name='datamart_datamart_connection')
+
+    def __str__(self):
+        return self.ip

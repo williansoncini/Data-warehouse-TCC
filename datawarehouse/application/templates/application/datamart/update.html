@@ -1,0 +1,36 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    <h5 class='titles'>Data mart - detail 🎲</h5>  
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" id="input">Datamart name</span>
+            <input type="text" class="form-control" value="{{datamart.name}}" name="columnName">
+        </div> 
+        <div class='date-datamart mb-3'>
+            Created: <input type="datetime" value="{{datamart.created}}" readonly="true"> 📅
+            Last updated: <input type="datetime" value="{{datamart.updated}}" readonly="true"> ✅
+        </div>
+
+        <h3> Connetion 🌐</h3>
+
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" >IP</span>
+            <input type="text" class="form-control" value="{{connection.ip}}" name="ip">
+        </div>
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" >Password</span>
+            <input type="text" class="form-control" value="{{connection.port}}" name="port">
+        </div>
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" >Username</span>
+            <input type="text" class="form-control" value="{{connection.username}}" name="username">
+        </div>
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" >Password</span>
+            <input type="text" class="form-control" value="{{connection.password}}" name="password">
+        </div>
+        
+    </form>
+{% endblock %}
