@@ -120,9 +120,10 @@ class ColumnStagingArea(models.Model):
         return self.name
 
 class DatamartConnection(models.Model):
+    database = CharField(max_length=50)
     username = CharField(max_length=50)
     password = CharField(max_length=50)
-    ip = CharField(max_length=20)
+    host = CharField(max_length=20)
     port = IntegerField()
     datamart_id = ForeignKey(Datamart, on_delete=models.CASCADE, related_name='datamart_datamart_connection')
 

@@ -6,7 +6,7 @@
         {% csrf_token %}
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" id="input">Datamart name</span>
-            <input type="text" class="form-control" value="{{datamart.name}}" name="columnName">
+            <input type="text" class="form-control" value="{{datamart.name}}" name="datamart-name">
         </div> 
         <div class='date-datamart mb-3'>
             Created: <input type="datetime" value="{{datamart.created}}" readonly="true"> 📅
@@ -16,21 +16,26 @@
         <h3> Connetion 🌐</h3>
 
         <div class="input-group input-group-lg mb-3 ">
-            <span class="input-group-text" >IP</span>
-            <input type="text" class="form-control" value="{{connection.ip}}" name="ip">
+            <span class="input-group-text" >Host</span>
+            <input type="text" class="form-control" value="{{connection.host}}" name="datamart-host">
         </div>
         <div class="input-group input-group-lg mb-3 ">
-            <span class="input-group-text" >Password</span>
-            <input type="text" class="form-control" value="{{connection.port}}" name="port">
+            <span class="input-group-text" >Port</span>
+            <input type="text" class="form-control" value="{{connection.port}}" name="datamart-port">
         </div>
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Username</span>
-            <input type="text" class="form-control" value="{{connection.username}}" name="username">
+            <input type="text" class="form-control" value="{{connection.username}}" name="datamart-username">
         </div>
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Password</span>
-            <input type="text" class="form-control" value="{{connection.password}}" name="password">
+            <input type="text" class="form-control" value="{{connection.password}}" name="datamart-password">
         </div>
-        
+         <div>
+            <button type="submit" class="btn btn-success mt-3"> Save </button>
+            <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:datamart-list' %}'">
+                Cancel 
+            </button>
+        </div>
     </form>
 {% endblock %}

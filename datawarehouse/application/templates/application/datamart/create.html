@@ -1,0 +1,60 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    <h5 class='titles'>Data mart - Create 🎲</h5>  
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" id="input">Datamart name</span>
+            <input type="text" class="form-control" name="datamart-name">
+        </div> 
+        <h3> Connetion 🌐</h3>
+        <div class='mb-2 form-check form-switch'>
+            <input class="form-check-input" type="checkbox" id="checkbox-connection-datamart" name="datamart-check" onClick="connectionDisplay()">
+            <label class="form-check-label" for="checkbox-connection-datamart"> Create or add datamart using server connection </label>
+        </div>
+        <div id='connection-datamart'>
+            <div class="input-group input-group-lg mb-3 ">
+                <span class="input-group-text" >Host</span>
+                <input type="text" class="form-control" name="datamart-host">
+            </div>
+            <div class="input-group input-group-lg mb-3 ">
+                <span class="input-group-text" >Port</span>
+                <input type="number" class="form-control" name="datamart-port">
+            </div>
+            <div class="input-group input-group-lg mb-3 ">
+                <span class="input-group-text" >Username</span>
+                <input type="text" class="form-control" name="datamart-username">
+            </div>
+            <div class="input-group input-group-lg">
+                <span class="input-group-text" >Password</span>
+                <input type="password" class="form-control" name="datamart-password">
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-success mt-3"> Save </button>
+            <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:datamart-list' %}'">
+                Cancel 
+            </button>
+        </div>
+    </form>
+
+    <script>
+        function connectionDisplay(){
+            divWithConnection = document.getElementById('connection-datamart');
+            checkBoxDatamart = document.getElementById('checkbox-connection-datamart');
+            if (checkBoxDatamart.checked)
+                hide(divWithConnection);
+            else
+                unhide(divWithConnection);
+        }
+
+        function hide(element){
+            element.style.display = 'none'
+        }
+
+        function unhide(element){
+            element.style.display = ''
+        }
+    </script>
+{% endblock %}

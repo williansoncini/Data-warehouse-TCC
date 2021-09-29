@@ -1,12 +1,15 @@
 import psycopg2
+from dotenv import load_dotenv
+from os import getenv
 
 def connect():
     try:
+        load_dotenv()
         conn = psycopg2.connect(
-            host='localhost',
-            database='datamart_test',
-            user='postgres',
-            password='123')
+            host=getenv('STAGING_AREA_HOST'),
+            database=getenv('STAGING_AREA_DATABASE'),
+            user=getenv('STAGING_AREA_USERNAME'),
+            password=getenv('STAGING_AREA_PASSWORD'))
 
         print('Conectado com o banco de dados')
         return conn
