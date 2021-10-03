@@ -1,6 +1,5 @@
 from django.contrib import messages
-from django.http.response import HttpResponse, JsonResponse
-from application.models import Datamart, DatamartConnection
+from application.models import Datamart
 from django.shortcuts import redirect, render
 from django.views import View
 import psycopg2
@@ -8,82 +7,81 @@ from dotenv import load_dotenv
 from os import getenv
 
 class DatamartCreate(View):
-    
     def get(self, request, *args, **kwargs):
         # messages.success(request,'teste') 
-        
         return render(request, 'application/datamart/create.html')
 
     def post(self, request):
-        checkbox = request.POST.get('datamart-check')
-        name=request.POST.get('datamart-name','')
-        datamartExistentInSystemDb = Datamart.objects.filter(name=name).first()
+        checkboxCreateDatamartUsingDefaultConnection = request.POST.get('datamart-check')
+        datamartName=request.POST.get('datamart-name','')
+        database = request.POST.get('datamart-databaseName','')
+        datamartExistentInSystemDb = Datamart.objects.filter(name=datamartName).first()
         
-        if checkbox == 'on':
-
-            if datamartExistentInSystemDb == None:
-                load_dotenv()
-                conn = getDefaultConectionDataMart()
-                conn.autocommit = True
-
-                cur = conn.cursor()
-                cur.execute("SELECT DATNAME FROM pg_database where datname='{}'".format(name))
-                datamartExistentInServerDb = cur.fetchone()
-
+        if checkboxCreateDatamartUsingDefaultConnection == 'on':
+            if datamartExistentInSystemDb == None:                
+                datamartExistentInServerDb = getDatabaseIfExistsFromDefaultServerConnection(database)
+                # datamartConnection = getDefaultObjectConectionDataMart()
+                # dataMart = Datamart(name=datamartName, connection_id=datamartConnection)
+                datamart = formingDatamartWithDefaultServerConnection(datamartName,database)                 
                 if datamartExistentInServerDb == None:
-                    dataMart = Datamart(name=name)
-                    datamartConnection = getDefaultObjectConectionDataMart(dataMart)
-                    
-                    cur.execute('CREATE DATABASE {};'.format(name))
-                    dataMart.save()
-                    datamartConnection.save()
+                    # datamartConnection.database = databaseName
+                    datamartSavedBoolean = tryCreateDatabaseFromDatamartReturningBoolean(datamart)
+                    # cur.execute('CREATE DATABASE {};'.format(databaseName))
+                    # datamartConnection.save()
+                    if datamartSavedBoolean:
+                        datamart.save()
                 else:
-                    dataMart = Datamart(name=name)
-                    datamartConnection = getDefaultObjectConectionDataMart(dataMart)
-                    dataMart.save()
-                    datamartConnection.save()
-                cur.close()
-                conn.close()
+                #     datamartConnection.database = databaseName
+                #     datamartConnection.save()
+                #     dataMart.save()
+                # cur.close()
+                # conn.close()
+                    datamart.save()
         else:
             if datamartExistentInSystemDb == None:
                 host = request.POST.get('datamart-host','')
                 port = request.POST.get('datamart-port','')
-                username = request.POST.get('datamart-username')
+                user = request.POST.get('datamart-username')
                 password = request.POST.get('datamart-password')
 
-                conn = psycopg2.connect(
-                    database=name,
-                    host=host,
-                    port=port,
-                    user=username,
-                    password=password
-                )
-                conn.autocommit = True
+                databaseOrNone = getDatabaseIfExistsFromParametersConnection(database,host,port,user,password)
 
-                cur = conn.cursor()
-                cur.execute("SELECT DATNAME FROM pg_database where datname='{}'".format(name))
-                datamartExistentInServerDb = cur.fetchone()
+                # conn = psycopg2.connect(
+                #     database=databaseName,
+                #     host=host,
+                #     port=port,
+                #     user=username,
+                #     password=password
+                # )
+                # conn.autocommit = True
 
-                if datamartExistentInServerDb != None:
-                    dataMart = Datamart(name=name)
+                # cur = conn.cursor()
+                # cur.execute("SELECT DATNAME FROM pg_database where datname='{}'".format(databaseName))
+                # datamartExistentInServerDb = cur.fetchone()
+
+                if databaseOrNone != None:
+                    dataMart = formingDatamartWithParameters(datamartName,database,host,port,user,password)
                     dataMart.save()
-                    datamartConnection = DatamartConnection(
-                        database=name,
-                        host=host,
-                        port=port,
-                        username=username,
-                        password=password,
-                        datamart_id=dataMart
-                    )
+                #     dataMart = Datamart(name=datamartName)
+                #     dataMart.save()
+                #     datamartConnection = DatamartConnection(
+                #         database=databaseName,
+                #         host=host,
+                #         port=port,
+                #         username=username,
+                #         password=password
+                #         # datamart_id=dataMart
+                #     )
                     
-                    datamartConnection.save()
-                cur.close()
-                conn.close()                    
+                #     datamartConnection.save()
+                # cur.close()
+                # conn.close()                    
             else:
                 print('Datamart já existente: ', datamartExistentInSystemDb.name)
         return redirect('application:datamart-list')
 
 def getDefaultConectionDataMart():
+    load_dotenv()
     return psycopg2.connect(
         database=getenv('SYSTEM_DATA_BASE_DATABASE'),
         host=getenv('SYSTEM_DATA_BASE_HOST'),
@@ -92,12 +90,74 @@ def getDefaultConectionDataMart():
         password=getenv('SYSTEM_DATA_BASE_PASSWORD')
     )
 
-def getDefaultObjectConectionDataMart(dataMart):
-    return DatamartConnection(
-        database=getenv('SYSTEM_DATA_BASE_DATABASE'),
+def getDatabaseIfExistsFromDefaultServerConnection(databaseName):
+    conn = getDefaultConectionDataMart()
+    # conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("SELECT DATNAME FROM pg_database where datname='{}'".format(databaseName))
+    databaseOrNone = cur.fetchone()
+    cur.close()
+    conn.close()
+    return databaseOrNone
+
+def formingDatamartWithDefaultServerConnection(datamartName, database):
+    load_dotenv()
+    return Datamart(
+        name = datamartName,
+        database=database,
         host=getenv('SYSTEM_DATA_BASE_HOST'),
         port=getenv('SYSTEM_DATA_BASE_PORT'),
-        username=getenv('SYSTEM_DATA_BASE_USERNAME'),
+        user=getenv('SYSTEM_DATA_BASE_USERNAME'),
         password=getenv('SYSTEM_DATA_BASE_PASSWORD'),
-        datamart_id=dataMart
+        localdatabase='1'
+    )
+
+def getConnectionFromDatamart(datamart):
+    return psycopg2.connect(
+            database=datamart.database,
+            host=datamart.host,
+            port=datamart.port,
+            user=datamart.user,
+            password=datamart.password
+        )
+
+def tryCreateDatabaseFromDatamartReturningBoolean(datamart):
+    try:
+        conn = getDefaultConectionDataMart()
+        conn.autocommit = True
+        cur = conn.cursor()
+        cur.execute('CREATE DATABASE {};'.format(datamart.database))
+        cur.close()
+        conn.close()
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+def getConnectionFromParameters(database,host,port,user,password):
+    return psycopg2.connect(
+        database=database,
+        host=host,
+        port=port,
+        user=user,
+        password=password
+    )
+
+def getDatabaseIfExistsFromParametersConnection(database,host,port,user,password):
+    conn = getConnectionFromParameters(database,host,port,user,password)
+    cur = conn.cursor()
+    cur.execute("SELECT DATNAME FROM pg_database where datname='{}'".format(database))
+    databaseOrNone = cur.fetchone()
+    cur.close()
+    conn.close()
+    return databaseOrNone
+
+def formingDatamartWithParameters(name,database,host,port,user,password):
+    return Datamart(
+        name=name,
+        database=database,
+        host=host,
+        port=port,
+        user=user,
+        password=password
     )

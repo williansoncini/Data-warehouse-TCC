@@ -17,7 +17,7 @@ def connectExternalDatamart(database, host, user, password, port):
         print('não foi possível se conectar ao banco de dados')
 
 def connectLocalDatamart():
-    try:
+    try:    
         load_dotenv()
         conn = psycopg2.connect(
             database=getenv('STAGING_AREA_DATABASE'),

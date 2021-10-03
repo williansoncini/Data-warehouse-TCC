@@ -1,55 +1,48 @@
 {% extends 'application/base.html' %}
 
 {% block content %}
-    <h5 class='titles'>Data mart - detail 🎲</h5>  
+    <h5 class='titles'>Data mart - Delete 🎲</h5>  
+
     <form method="post">
         {% csrf_token %}
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" id="input">Datamart name</span>
-            <input type="text" class="form-control" value="{{datamart.name}}" name="datamart-name">
+            <input type="text" class="form-control" value="{{datamart.name}}" name="datamart-name" readonly="true">
         </div> 
         <div class='date-datamart mb-3'>
             Created: <input type="datetime" value="{{datamart.created}}" readonly="true"> 📅
             Last updated: <input type="datetime" value="{{datamart.updated}}" readonly="true"> ✅
         </div>
-
         <h3> Connetion 🌐</h3>
-
-        {% if datamart.localdatabase %}
-            <div class="input-group input-group-lg mb-3 ">
-                <span class="input-group-text" >Database name</span>
-                <input type="text" class="form-control" value="{{datamart.database}}" name="datamart-databaseName">
-            </div>
-        {% else %}
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Database name</span>
-            <input type="text" class="form-control" value="{{datamart.database}}" name="datamart-databaseName" readonly="true">
+            <input type="text" class="form-control" value="{{connection.database}}" name="datamart-databaseName" readonly="true">
         </div>
-        {% endif %}
-       
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Host</span>
-            <input type="text" class="form-control" value="{{datamart.host}}" name="datamart-host">
+            <input type="text" class="form-control" value="{{connection.host}}" name="datamart-host" readonly="true">
         </div>
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Port</span>
-            <input type="text" class="form-control" value="{{datamart.port}}" name="datamart-port">
+            <input type="text" class="form-control" value="{{connection.port}}" name="datamart-port" readonly="true">
         </div>
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Username</span>
-            <input type="text" class="form-control" value="{{datamart.user}}" name="datamart-username">
+            <input type="text" class="form-control" value="{{connection.user}}" name="datamart-username" readonly="true">
         </div>
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Password</span>
-            <input type="text" class="form-control" value="{{datamart.password}}" name="datamart-password">
+            <input type="text" class="form-control" value="{{connection.password}}" name="datamart-password" readonly="true">
         </div>
+        {% if not connection.localdatabase %}
+            <div>
+                <h6 class='text-danger'>This datamart will be deleted from the system database. To delete in postgre, please do this manually, because we just have acess to database system.</h6>
+            </div>
+        {% endif %}
          <div>
-            <button type="submit" class="btn btn-success mt-3"> Save </button>
+            <button type="submit" class="btn btn-success mt-3"> Delete </button>
             <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:datamart-list' %}'">
                 Cancel 
-            </button>
-            <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:datamart-delete' datamart.id %}'">
-                Delete 
             </button>
         </div>
     </form>

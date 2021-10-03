@@ -1,19 +1,31 @@
 from django.db import models
-from django.db.models.fields import CharField, IntegerField, TextField
+from django.db.models.fields import BooleanField, CharField, IntegerField, TextField
 from django.db.models.fields.related import ForeignKey
 
-# Create your models here.
+
+# class DatamartConnection(models.Model):
+
+#     # datamart_id = ForeignKey(Datamart, on_delete=models.CASCADE, related_name='datamart_datamart_connection')
+
+#     def __str__(self):
+#         return self.database
+
 class Datamart(models.Model):
     STATUS_CHOICES = (
         ('active','Active',),
         ('incative','Inactive'),
     )
-
     name = models.CharField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20,choices=STATUS_CHOICES,default='Active')
-    # usuario = models.CharField(max_length=250)
+    # connection_id = ForeignKey(DatamartConnection, on_delete=models.CASCADE, related_name='datamartconnection_datamart')
+    database = CharField(max_length=50)
+    user = CharField(max_length=50)
+    password = CharField(max_length=50)
+    host = CharField(max_length=20)
+    port = IntegerField()
+    localdatabase = BooleanField(default='0')
 
     class Meta:
         ordering = ('-name',)
@@ -118,14 +130,3 @@ class ColumnStagingArea(models.Model):
 
     def __str__(self):
         return self.name
-
-class DatamartConnection(models.Model):
-    database = CharField(max_length=50)
-    username = CharField(max_length=50)
-    password = CharField(max_length=50)
-    host = CharField(max_length=20)
-    port = IntegerField()
-    datamart_id = ForeignKey(Datamart, on_delete=models.CASCADE, related_name='datamart_datamart_connection')
-
-    def __str__(self):
-        return self.ip

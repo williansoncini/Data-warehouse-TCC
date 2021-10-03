@@ -13,6 +13,12 @@
             <input class="form-check-input" type="checkbox" id="checkbox-connection-datamart" name="datamart-check" onClick="connectionDisplay()">
             <label class="form-check-label" for="checkbox-connection-datamart"> Create or add datamart using server connection </label>
         </div>
+
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" >Database name</span>
+            <input type="text" class="form-control" name="datamart-databaseName">
+        </div>
+
         <div id='connection-datamart'>
             <div class="input-group input-group-lg mb-3 ">
                 <span class="input-group-text" >Host</span>
@@ -32,7 +38,7 @@
             </div>
         </div>
         <div>
-            <button type="submit" class="btn btn-success mt-3"> Save </button>
+            <button type="submit" class="btn btn-success mt-3"> Create </button>
             <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:datamart-list' %}'">
                 Cancel 
             </button>
