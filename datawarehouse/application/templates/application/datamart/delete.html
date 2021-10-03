@@ -16,25 +16,25 @@
         <h3> Connetion 🌐</h3>
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Database name</span>
-            <input type="text" class="form-control" value="{{connection.database}}" name="datamart-databaseName" readonly="true">
+            <input type="text" class="form-control" value="{{datamart.database}}" name="datamart-databaseName" readonly="true">
         </div>
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Host</span>
-            <input type="text" class="form-control" value="{{connection.host}}" name="datamart-host" readonly="true">
+            <input type="text" class="form-control" value="{{datamart.host}}" name="datamart-host" readonly="true">
         </div>
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Port</span>
-            <input type="text" class="form-control" value="{{connection.port}}" name="datamart-port" readonly="true">
+            <input type="text" class="form-control" value="{{datamart.port}}" name="datamart-port" readonly="true">
         </div>
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Username</span>
-            <input type="text" class="form-control" value="{{connection.user}}" name="datamart-username" readonly="true">
+            <input type="text" class="form-control" value="{{datamart.user}}" name="datamart-username" readonly="true">
         </div>
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" >Password</span>
-            <input type="text" class="form-control" value="{{connection.password}}" name="datamart-password" readonly="true">
+            <input type="text" class="form-control" value="{{datamart.password}}" name="datamart-password" readonly="true">
         </div>
-        {% if not connection.localdatabase %}
+        {% if not datamart.localdatabase %}
             <div>
                 <h6 class='text-danger'>This datamart will be deleted from the system database. To delete in postgre, please do this manually, because we just have acess to database system.</h6>
             </div>

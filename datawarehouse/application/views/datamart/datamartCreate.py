@@ -20,22 +20,12 @@ class DatamartCreate(View):
         if checkboxCreateDatamartUsingDefaultConnection == 'on':
             if datamartExistentInSystemDb == None:                
                 datamartExistentInServerDb = getDatabaseIfExistsFromDefaultServerConnection(database)
-                # datamartConnection = getDefaultObjectConectionDataMart()
-                # dataMart = Datamart(name=datamartName, connection_id=datamartConnection)
                 datamart = formingDatamartWithDefaultServerConnection(datamartName,database)                 
                 if datamartExistentInServerDb == None:
-                    # datamartConnection.database = databaseName
                     datamartSavedBoolean = tryCreateDatabaseFromDatamartReturningBoolean(datamart)
-                    # cur.execute('CREATE DATABASE {};'.format(databaseName))
-                    # datamartConnection.save()
                     if datamartSavedBoolean:
                         datamart.save()
                 else:
-                #     datamartConnection.database = databaseName
-                #     datamartConnection.save()
-                #     dataMart.save()
-                # cur.close()
-                # conn.close()
                     datamart.save()
         else:
             if datamartExistentInSystemDb == None:
@@ -46,36 +36,9 @@ class DatamartCreate(View):
 
                 databaseOrNone = getDatabaseIfExistsFromParametersConnection(database,host,port,user,password)
 
-                # conn = psycopg2.connect(
-                #     database=databaseName,
-                #     host=host,
-                #     port=port,
-                #     user=username,
-                #     password=password
-                # )
-                # conn.autocommit = True
-
-                # cur = conn.cursor()
-                # cur.execute("SELECT DATNAME FROM pg_database where datname='{}'".format(databaseName))
-                # datamartExistentInServerDb = cur.fetchone()
-
                 if databaseOrNone != None:
                     dataMart = formingDatamartWithParameters(datamartName,database,host,port,user,password)
                     dataMart.save()
-                #     dataMart = Datamart(name=datamartName)
-                #     dataMart.save()
-                #     datamartConnection = DatamartConnection(
-                #         database=databaseName,
-                #         host=host,
-                #         port=port,
-                #         username=username,
-                #         password=password
-                #         # datamart_id=dataMart
-                #     )
-                    
-                #     datamartConnection.save()
-                # cur.close()
-                # conn.close()                    
             else:
                 print('Datamart já existente: ', datamartExistentInSystemDb.name)
         return redirect('application:datamart-list')
@@ -92,7 +55,6 @@ def getDefaultConectionDataMart():
 
 def getDatabaseIfExistsFromDefaultServerConnection(databaseName):
     conn = getDefaultConectionDataMart()
-    # conn.autocommit = True
     cur = conn.cursor()
     cur.execute("SELECT DATNAME FROM pg_database where datname='{}'".format(databaseName))
     databaseOrNone = cur.fetchone()
