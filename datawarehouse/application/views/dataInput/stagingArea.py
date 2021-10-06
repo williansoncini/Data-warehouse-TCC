@@ -4,11 +4,12 @@ from application.services.database.stagingArea import connect, makeSelectStateme
 from application.models import ColumnStagingArea,TableStagingArea
 from django.shortcuts import get_object_or_404, redirect, render
 
-def showTableDetail(request):
+def StagingAreaDetail(request):
     if request.method == 'GET':
         tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
         columnsStagingArea = ColumnStagingArea.objects.filter(table=tableStagingArea.id)
 
+        
         conn = connect()
         cur = conn.cursor()
         cur.execute('SELECT * FROM {}'.format(tableStagingArea.tableName))
@@ -175,6 +176,8 @@ def statementView(request):
         tableStagingArea.statementCreateTable = request.POST.get('statementCreateTable','')
         tableStagingArea.statementSelect = request.POST.get('statementSelect','')
         tableStagingArea.save()
+
+
 
         return HttpResponse('sucess!')
         
