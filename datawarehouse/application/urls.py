@@ -7,6 +7,7 @@ from .views.dataInput import dataLoad, stagingArea
 from .views.datamart.datamart import DatamartView
 from .views.datamart.datamartUpdate import DatamartUpdate
 from .views.datamart.datamartCreate import DatamartCreate
+from .views.dataInput.selectDatamart import SelectDatamart
 # from .views.datamart import Datamart
 from .views.dataInput import csv,dump, query
 from .views.home import home
@@ -16,6 +17,7 @@ app_name = 'application'
 
 urlpatterns = [
     path('',home.getHome, name='home'),
+    path('input/datamart',SelectDatamart.as_view(), name='select-datamart'),
     path('input/csv/', csv.inputCsvFile, name='csv_input'),
     path('input/query/', query.inputFromQuerySQL, name='query_input'),
     path('input/dump/', dump.inputDumpFile, name='dump_input'),

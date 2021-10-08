@@ -97,3 +97,15 @@ body{
 .date-datamart{
     color: tomato;
 }
+
+.import-menu{
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#import-csv{
+    color: white;
+    background: green;
+}
