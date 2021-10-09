@@ -50,9 +50,10 @@
             {% endif %}
         </div>
         <h5> Destiny - Data mart 🧊 </h5>
-        <div>
-            
-        </div>
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" id="input">Datamart name</span>
+            <input type="text" class="form-control" value="{{datamartDestiny}}" readonly="true">
+        </div> 
         <button type="submit" class="btn btn-success">Continue</button>
         <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:deleteTableStagingArea' tableStagingArea.id %}'">Cancel</button>
     </form>

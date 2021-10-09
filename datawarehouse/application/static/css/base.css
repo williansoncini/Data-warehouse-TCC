@@ -98,14 +98,41 @@ body{
     color: tomato;
 }
 
-.import-menu{
+.import-options{
     margin: 5px;
     padding: 10px;
     border-radius: 5px;
     text-align: center;
+    cursor: pointer;
 }
 
-#import-csv{
+.import-csv{
+    color: white;
+    background: rgb(67, 157, 67);
+}
+
+.import-csv:hover{
     color: white;
     background: green;
 }
+
+.import-dump{
+    color: white;
+    background: rgb(64, 137, 192);
+}
+
+.import-dump:hover{
+    color: white;
+    background: rgb(0, 133, 221);
+}
+
+.import-sql{
+    color: white;
+    background: rgb(250, 141, 122);
+}
+
+.import-sql:hover{
+    color: white;
+    background: tomato;
+}
+

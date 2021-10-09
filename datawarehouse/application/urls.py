@@ -1,13 +1,14 @@
 from application.views.datamart.datamart import DatamartView
 from application.models import Datamart
 from django.conf.urls import url
-
 from application.views.datamart.datamartDelete import DatamartDelete
 from .views.dataInput import dataLoad, stagingArea
 from .views.datamart.datamart import DatamartView
 from .views.datamart.datamartUpdate import DatamartUpdate
 from .views.datamart.datamartCreate import DatamartCreate
-from .views.dataInput.selectDatamart import SelectDatamart
+from .views.dataInput.datamart.selectDatamart import SelectDatamart
+from .views.dataInput.datamart.selectTableDatamart import SelectTableDatamart
+from .views.dataInput.files.selectFormInputView import SelectFormInputView
 # from .views.datamart import Datamart
 from .views.dataInput import csv,dump, query
 from .views.home import home
@@ -18,9 +19,11 @@ app_name = 'application'
 urlpatterns = [
     path('',home.getHome, name='home'),
     path('input/datamart',SelectDatamart.as_view(), name='select-datamart'),
-    path('input/csv/', csv.inputCsvFile, name='csv_input'),
-    path('input/query/', query.inputFromQuerySQL, name='query_input'),
-    path('input/dump/', dump.inputDumpFile, name='dump_input'),
+    path('input/datamart/table',SelectTableDatamart.as_view(), name='select-table-datamart'),
+    path('input/files/', SelectFormInputView.as_view(), name='files-input'),
+    path('input/csv/', csv.inputCsvFile, name='csv-input'),
+    path('input/dump/', dump.inputDumpFile, name='dump-input'),
+    path('input/query/', query.inputFromQuerySQL, name='sql-input'),
     path('input/preImportFile/', dataLoad.showDataFromFile, name='data_load'),
     path('input/stagingArea', stagingArea.StagingAreaDetail, name='stagingArea'),
     path('input/stagingArea/deleteTable/<int:table_id>/', stagingArea.deleteTableStagingArea, name='deleteTableStagingArea'),

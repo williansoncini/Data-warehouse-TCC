@@ -9,7 +9,6 @@ def StagingAreaDetail(request):
         tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
         columnsStagingArea = ColumnStagingArea.objects.filter(table=tableStagingArea.id)
 
-        
         conn = connect()
         cur = conn.cursor()
         cur.execute('SELECT * FROM {}'.format(tableStagingArea.tableName))
@@ -17,10 +16,13 @@ def StagingAreaDetail(request):
         cur.close()
         conn.close()
 
-        return render(request, 'application/input/stagingArea/stagingArea.html',{
+        datamartDestiny = request.session['datamartSelected']
+
+        return render(request, 'application/stagingArea/stagingArea.html',{
             'tableStagingArea':tableStagingArea,
             'columnsStagingArea':columnsStagingArea,
-            'data':data
+            'data':data,
+            'datamartDestiny': datamartDestiny
         })
     else:
         tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
@@ -44,7 +46,7 @@ def StagingAreaDetail(request):
 
 def createColumnStagingArea(request, table_id):
     if request.method == 'GET':
-        return render(request, 'application/input/stagingArea/column/create.html')
+        return render(request, 'application/stagingArea/column/create.html')
     else:
         tableStagingArea = TableStagingArea.objects.get(pk=table_id)
 
@@ -71,7 +73,7 @@ def updateColumnStagingArea(request, table_id, column_id):
     if request.method == 'GET':
         columnStagingArea = ColumnStagingArea.objects.get(table_id=table_id, pk=column_id)
 
-        return render(request, 'application/input/stagingArea/column/update.html',{
+        return render(request, 'application/stagingArea/column/update.html',{
             'columnName':columnStagingArea.name,
             'columnType': columnStagingArea.typeColumn
         })
@@ -129,7 +131,7 @@ def updateColumnStagingArea(request, table_id, column_id):
 def deleteColumnStagingArea(request, table_id, column_id):
     if request.method == 'GET':
         columnStagingArea = ColumnStagingArea.objects.get(table_id=table_id, pk=column_id)
-        return render(request, 'application/input/stagingArea/column/delete.html',{
+        return render(request, 'application/stagingArea/column/delete.html',{
             'columnStagingArea':columnStagingArea
         })
     else:
@@ -167,7 +169,7 @@ def statementView(request):
         
         print(tableStagingArea.statementCreateTable)
 
-        return render(request,'application/input/stagingArea/statement.html',{
+        return render(request,'application/stagingArea/statement.html',{
             'statementCreateTable': tableStagingArea.statementCreateTable,
             'statementSelect': tableStagingArea.statementSelect
         })
@@ -176,8 +178,6 @@ def statementView(request):
         tableStagingArea.statementCreateTable = request.POST.get('statementCreateTable','')
         tableStagingArea.statementSelect = request.POST.get('statementSelect','')
         tableStagingArea.save()
-
-
 
         return HttpResponse('sucess!')
         
