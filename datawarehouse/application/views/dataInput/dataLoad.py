@@ -1,5 +1,5 @@
 from django.core.files.storage import FileSystemStorage
-from application.services.database.stagingArea import createTableForEtl, importCsvFileInTableWithHeader,importCsvFileInTableWithOutHeader
+from application.services.database.stagingArea import createTableForEtl, importCsvFileInTableWithHeader,importCsvFileInTableWithOutHeader, createTable
 from application.models import ColumnDataMart, ColumnStagingArea, TableDataMart, TableStagingArea, TemporaryFile, CsvFile
 from django.shortcuts import redirect, render
 from application.services.file.csvService import getColumnsFromCsvFile, getFirstTwentyLinesFromFile, getTypeOfColumnsFromCsvFile, makeDicWithColumnType, makeFakeColumnsFromCsvFile
@@ -10,8 +10,8 @@ def showDataFromFile(request):
         file = TemporaryFile.objects.get(pk=request.session['tempFilePk'])
         inputDataWithCsvHeader = bool(request.POST.get('checkbox',''))
         filePath = file.filePath
-        tableName = file.name
         if createTableAutomatically:
+            tableName = file.name
             typeColumns = getTypeOfColumnsFromCsvFile(filePath)
 
             if inputDataWithCsvHeader:
@@ -54,14 +54,14 @@ def showDataFromFile(request):
                 else:
                     statement+='{} {});'.format(column.name,column.type)
 
-            print(statement)
+            createTable(statement)
             
             if inputDataWithCsvHeader:
-                importCsvFileInTableWithHeader(filePath,tableName)
+                importCsvFileInTableWithHeader(filePath,datamartTable.name)
             else:
-                importCsvFileInTableWithOutHeader(filePath,tableName)
+                importCsvFileInTableWithOutHeader(filePath,datamartTable.name)
 
-            (tableStagingArea,__) = TableStagingArea.objects.get_or_create(tableName=tableName)
+            (tableStagingArea,__) = TableStagingArea.objects.get_or_create(tableName=datamartTable.name)
             request.session['pkTableStagingArea'] = tableStagingArea.id
             return redirect('application:stagingArea')
     else:

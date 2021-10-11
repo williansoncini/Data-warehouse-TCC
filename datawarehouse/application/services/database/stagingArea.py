@@ -86,3 +86,12 @@ def makeStatementCreateTable(tableName, Columns):
     statement += ');'
 
     return statement
+
+def createTable(statement):
+    conn = connect()
+    cur = conn.cursor()
+    cur.execute(statement)
+    cur.close()
+    conn.commit()
+    print('conexão sendo fechada!')
+    conn.close()  
