@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ColumnStagingArea, Datamart, TableDataMart, ColumnDataMart, TableStagingArea, TypeData
+from .models import ColumnStagingArea, Datamart, TableDataMart, ColumnDataMart, TableStagingArea
 # Register your models here.
 admin.site.register(Datamart)
 # admin.site.register(DatamartConnection)

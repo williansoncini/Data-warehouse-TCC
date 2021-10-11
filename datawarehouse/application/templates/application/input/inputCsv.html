@@ -4,31 +4,21 @@
     <h3>CSV</h3>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        <div class='mb-1'>
             <label for="formFile" class="form-label">Input CSV here ✅ </label>
             <input class="form-control" type="file" id="formFile" name="file" >
-        <button type="submit" class="btn btn-success mt-3"> Continue </button>
-        <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:home' %}'">
-            Cancel 
-        </button>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class='alert alert-danger mb-2'>
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div>
+            <button type="submit" class="btn btn-success"> Continue </button>
+            <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'">Cancel </button>
+        </div>
     </form>
-
-    {% if message %}
-        <h3>{{message}}</h3>
-    {% endif %} 
-
-    {% if columns %}
-        <h3>Colunas</h3>
-        {% for column in columns %}
-            <p>{{column}}</p>
-        {% endfor %}
-    {% endif %}
-
-    {% if typeColumns %}
-        <h3>Tipos</h3>
-        {% for typeColumn in typeColumns %}
-           <p>{{typeColumn}}</p>
-        {% endfor %}
-    {% endif %}
-
 {% endblock content %}
 

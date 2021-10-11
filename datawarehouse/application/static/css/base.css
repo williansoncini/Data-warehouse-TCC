@@ -136,3 +136,38 @@ body{
     background: tomato;
 }
 
+.card-tables-damart{
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.card-table-datamart-title{
+    padding: 10px;
+    background: #282a36;
+    color: whitesmoke;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.card-table-datamart-title:hover{
+    padding: 10px;
+    background: #212529;
+    color: whitesmoke;
+    border-radius: 5px 5px 0px 0px;
+    cursor: pointer;
+}
+
+.card-table-datamart-body{
+    padding: 2px;
+    font-size: 14px;
+    background: tomato;
+    color: whitesmoke;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.container-separator{
+    padding: 5px;
+    background: whitesmoke;
+    border: rgb(221, 221, 221) solid 2px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}

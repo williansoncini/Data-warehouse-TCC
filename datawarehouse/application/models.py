@@ -1,14 +1,8 @@
+from typing import Callable
 from django.db import models
-from django.db.models.fields import BooleanField, CharField, IntegerField, TextField
+from django.db.models.deletion import CASCADE
+from django.db.models.fields import BooleanField, CharField, DateTimeField, IntegerField, TextField
 from django.db.models.fields.related import ForeignKey
-
-
-# class DatamartConnection(models.Model):
-
-#     # datamart_id = ForeignKey(Datamart, on_delete=models.CASCADE, related_name='datamart_datamart_connection')
-
-#     def __str__(self):
-#         return self.database
 
 class Datamart(models.Model):
     STATUS_CHOICES = (
@@ -19,7 +13,6 @@ class Datamart(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20,choices=STATUS_CHOICES,default='Active')
-    # connection_id = ForeignKey(DatamartConnection, on_delete=models.CASCADE, related_name='datamartconnection_datamart')
     database = CharField(max_length=50)
     user = CharField(max_length=50)
     password = CharField(max_length=50)
@@ -50,39 +43,37 @@ class TableDataMart(models.Model):
     def __str__(self):
         return self.name
 
-class TypeData(models.Model):
-    TYPES_DATABASE = (
-        ('int', 'INT'),
-        ('varchar(250)', 'VARCHAR(250)'),
-        ('varchar(#)', 'VARCHAR(#)'),
-        ('char(1)','CHAR(1)'),
-        ('double(14,4)','DOUBLE(14,4)'),
-        ('double(#,#)','DOUBLE(#,#)'),
-    )
+# class TypeData(models.Model):
+#     TYPES_DATABASE = (
+#         ('int', 'INT'),
+#         ('varchar(250)', 'VARCHAR(250)'),
+#         ('varchar(#)', 'VARCHAR(#)'),
+#         ('char(1)','CHAR(1)'),
+#         ('double(14,4)','DOUBLE(14,4)'),
+#         ('double(#,#)','DOUBLE(#,#)'),
+#     )
 
-    TYPES_SIMPLE = (
-        ('text', 'TEXT'),
-        ('text(#)', 'TEXT(#)'),
-        ('number','NUMBER'),
-        ('number(#,#)','NUMBER(#,#)'),
-    )
+#     TYPES_SIMPLE = (
+#         ('text', 'TEXT'),
+#         ('text(#)', 'TEXT(#)'),
+#         ('number','NUMBER'),
+#         ('number(#,#)','NUMBER(#,#)'),
+#     )
 
-    # teste = models.CharField(max_length=250)
-    typeSimple = models.CharField(max_length=50, choices=TYPES_SIMPLE)
-    typeDataBase = models.CharField(max_length=50, choices=TYPES_DATABASE)
+#     typeSimple = models.CharField(max_length=50, choices=TYPES_SIMPLE)
+#     typeDataBase = models.CharField(max_length=50, choices=TYPES_DATABASE)
 
-    class Meta:
-        ordering = ('-typeSimple',)
-        # ordering = ('-teste',)
+#     class Meta:
+#         ordering = ('-typeSimple',)
 
-    def __str__(self):
-        return self.typeSimple
-        # return self.teste
+#     def __str__(self):
+#         return self.typeSimple
 
 class ColumnDataMart(models.Model):
     table = models.ForeignKey(TableDataMart, on_delete=models.CASCADE, related_name='column_datamart')
-    typeSimple = models.ForeignKey(TypeData, on_delete=models.CASCADE, related_name='column_typeSimple')
+    # typeSimple = models.ForeignKey(TypeData, on_delete=models.CASCADE, related_name='column_typeSimple')
     name = models.CharField(max_length=50)
+    type = models.CharField(max_length=50)
 
     class Meta:
         ordering = ('-name',)
@@ -130,3 +121,9 @@ class ColumnStagingArea(models.Model):
 
     def __str__(self):
         return self.name
+
+class importationDatamart(models.Model):
+    datamart = ForeignKey(Datamart, on_delete=CASCADE,related_name='importation_datamart')
+    tableDatamart = ForeignKey(TableDataMart, on_delete=CASCADE, related_name='importation_tableDatamart')
+    type = CharField(max_length=10)
+    created = DateTimeField(auto_now_add=True)

@@ -1,5 +1,6 @@
 from django.views import View
 from django.shortcuts import redirect, render
+from django.contrib import messages
 
 class SelectFormInputView(View):
     
@@ -7,9 +8,12 @@ class SelectFormInputView(View):
         return render(request,'application/input/files/selectFormInput.html')
 
     def post(self, request):
-        choiceInput = request.POST.get('options-files')
+        choiceInput = request.POST.get('options-file')
+        print(choiceInput)
+      
 
         if choiceInput == 'csv':
+            print('to aqui')
             request.session['choiceInput'] = 'csv'
             return redirect ('application:csv-input')
         elif choiceInput == 'dump':
@@ -19,6 +23,6 @@ class SelectFormInputView(View):
             request.session['choiceInput'] = 'sql'
             return redirect ('application:sql-input')
         else:
+            messages.warning(request, 'Select input form!')
             return render(request,'application/input/files/selectFormInput.html')
-
         

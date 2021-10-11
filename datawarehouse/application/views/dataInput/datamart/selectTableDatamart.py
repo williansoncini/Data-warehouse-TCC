@@ -25,6 +25,8 @@ class SelectTableDatamart(View):
                 return render(request, 'application/input/datamart/selectTableDatamart.html/', {
                     'tables': tables
                 })
+            else:
+                request.session['tableSelected'] = tableSelected
 
         return redirect('application:files-input')
 

@@ -1,5 +1,7 @@
+from application.views.datamart.tables.tableListView import TableListView
+from application.views.datamart.tables.tableDeleteView import TableDeleteView
 from application.views.datamart.datamart import DatamartView
-from application.models import Datamart
+from application.models import Datamart, TableDataMart
 from django.conf.urls import url
 from application.views.datamart.datamartDelete import DatamartDelete
 from .views.dataInput import dataLoad, stagingArea
@@ -34,6 +36,8 @@ urlpatterns = [
     path('datamart/',DatamartView.as_view(), name='datamart-list'),
     path('datamart/create/',DatamartCreate.as_view(), name='datamart-create'),
     path('datamart/update/<int:datamart_id>/',DatamartUpdate.as_view(), name='datamart-detail'),
-    path('datamart/delete/<int:datamart_id>',DatamartDelete.as_view(), name='datamart-delete')
+    path('datamart/delete/<int:datamart_id>',DatamartDelete.as_view(), name='datamart-delete'),
+    path('datamart/tables',TableListView.as_view(), name='datamart-tables'),
+    path('datamart/tables/delete/<int:table_id>',TableDeleteView.as_view(), name='datamart-tables-delete'),
     # path('datamart/',datamart.show, name='datamart-list')
 ]

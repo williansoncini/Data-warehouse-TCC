@@ -9,23 +9,32 @@
         <h5> Select input form </h5>
         <div class='mb-4'>
             <div>
-                <input type="radio" name="options-files" id="csv" value='csv'>
+                <input type="radio" name="options-file" id="csv" value='csv'>
                 <label class="import-options import-csv" for="csv" >CSV - Upload file</label>
             </div>
             <div>
-                <input type="radio" name="options-files" id="dump" value='dump'>
+                <input type="radio" name="options-file" id="dump" value='dump'>
                 <label class="import-options import-dump" for="dump">DUMP - Upload file</label>
             </div>
             <div>
-                <input type="radio" name="options-files" id="sql" value='sql'>
+                <input type="radio" name="options-file" id="sql" value='sql'>
                 <label class="import-options import-sql" for="sql">SQL - Extract data from 'SELECT' in another data base</label>
             </div>
         </div>
-    <div>
-        <button type="submit" class="btn btn-success" onclick="location.href='{% url 'application:select-table-datamart' %}'">Continue</button>
-        <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'">Cancel</button>
-        <button type="reset" class="btn btn-primary" onClick="location.href='{% url 'application:datamart-create' %}'">Create datamart</button>
-    </div>
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class='alert alert-danger'>
+                {{message}}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <div>
+            <button type="submit" class="btn btn-success" onclick="location.href='{% url 'application:select-table-datamart' %}'">Continue</button>
+            <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'">Cancel</button>
+            <button type="reset" class="btn btn-primary" onClick="location.href='{% url 'application:datamart-create' %}'">Create datamart</button>
+        </div>
     </form>
    
    

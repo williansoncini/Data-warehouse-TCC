@@ -3,6 +3,7 @@ from application.models import TemporaryFile
 from os.path import splitext
 from django.shortcuts import redirect, render
 from django.core.files.storage import FileSystemStorage
+from django.contrib import messages
 
 class File(object):
     def __init__(self, nome, filePath):
@@ -20,18 +21,23 @@ def inputCsvFile(request):
     typeColumns = []
     if request.method == 'POST':
         try:
-            nameFile = formatFileName(str(request.FILES['file']))
+            try:
+                file = request.FILES['file']
+            except:
+                messages.warning(request, 'Select file!')
+                return render(request, 'application/input/inputCsv.html')
+            nameFile = formatFileName(str(file))
+            
             filePathAfterUpload = saveCsvFileAndReturnFilePath(request.FILES['file'])
             fileSize =  getSizeFile(filePathAfterUpload)
             (temporaryFile,__) = TemporaryFile.objects.get_or_create(name=nameFile, filePath=filePathAfterUpload, size=fileSize)
             request.session['tempFilePk'] = temporaryFile.id
-        
+            
             return redirect('application:data_load')
         except OSError as err:
             print(err)
             return render(request, 'application/input/inputCsv.html', getFailMessage())
     else:    
-        # form = inputFileForm()
         return render(request, 'application/input/inputCsv.html')
 
 def saveCsvFileAndReturnFilePath(file):
