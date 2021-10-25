@@ -16,23 +16,25 @@ class DatamartDelete(View):
 
     def post(self, request, datamart_id):
         datamart = Datamart.objects.get(pk=datamart_id)
-
+        datamartDatabaseName = str(datamart.database).lower()
+        
         if datamart.localdatabase:
-            databaseExistent = checkIfDatabaseExists(datamart)
-                
+            databaseExistent = checkIfDatabaseExists(datamartDatabaseName)
+            print(databaseExistent)
             if databaseExistent != None:
                 databasedroped =  makeDropDatabaseInDefaultServerConnection(datamart)
                 if databasedroped:
                     datamart.delete()
-                    # messages.success(request,'teste')
+                    messages.success(request,'Data mart deleted!')
                     return redirect('application:datamart-list')
             else:
-                return render(request, 'application/datamart/delete.html', {
-                    'datamart' : datamart
-                })
-        else:  
-            datamart.delete()
-            return redirect('application:datamart-list')         
+                datamart.delete()
+                messages.success(request,"Data mart deleted at system database!".format(datamart.name))
+                return redirect('application:datamart-list')
+
+        datamart.delete()
+        messages.success(request,'Data mart deleted at system database!')
+        return redirect('application:datamart-list')         
 
 def getDefaultConectionDataMart():
     load_dotenv()
@@ -48,7 +50,7 @@ def checkIfDatabaseExists(datamart):
     conn = getDefaultConectionDataMart()
     conn.autocommit = True
     cur = conn.cursor()
-    cur.execute("SELECT DATNAME FROM pg_database where datname='{}'".format(datamart.database))
+    cur.execute("SELECT DATNAME FROM pg_database where datname='{}'".format(datamart))
     databaseExistent = cur.fetchone()
     return databaseExistent
 

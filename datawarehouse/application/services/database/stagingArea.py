@@ -93,5 +93,30 @@ def createTable(statement):
     cur.execute(statement)
     cur.close()
     conn.commit()
-    print('conexão sendo fechada!')
+    conn.close()  
+
+def dropTable(table):
+    conn = connect()
+    cur = conn.cursor()
+    cur.execute('DROP TABLE IF EXISTS {};'.format(table))
+    cur.close()
+    conn.commit()
+    conn.close()  
+
+
+def exportSelectToCsv(select,file):
+    sql = "COPY ({}) to stdout WITH CSV HEADER DELIMITER ';'".format(select)
+    conn = connect()
+    cur = conn.cursor()
+    cur.copy_expert(sql, file)
+    cur.close()
+    conn.commit()
+    conn.close()  
+
+def clearStagingArea(table):
+    conn = connect()
+    cur = conn.cursor()
+    cur.execute("DROP TABLE IF EXISTS {};".format(table))
+    cur.close()
+    conn.commit()
     conn.close()  

@@ -1,17 +1,30 @@
 {% extends 'application/base.html' %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class='alert alert-{{message.tags}} mb-2'>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class='d-flex justify-content-between'>
+        <h5 class='titles'>Data marts</h5>  
+        <button class='btn btn-primary mb-2' onClick="location.href='{% url 'application:datamart-tables-pre-create' %}'">Create</button>
+    </div>
+
     <div class='d-flex justify-content-between'>
         <h5 class='titles'>Tables - Datamart</h5>  
         {% comment %} <button class='btn btn-primary mb-2' onClick="location.href='{% url 'application:datamart-create' %}'">Create</button> {% endcomment %}
     </div>
-    
+
     <div class='d-flex flex-wrap'>
         {% for table in datamartTables %}
             {% comment %} <div class='datamarts-list' onClick="location.href='{% url 'application:datamart-detail' datamart.id %}'"> {% endcomment %}
             <div class='card-tables-damart'>
                 <div class='card-body'>
-                    <div class='card-table-datamart-title' onClick="location.href='{% url 'application:datamart-tables-delete' table.id %}'">
+                    <div class='card-table-datamart-title' onClick="location.href='{% url 'application:datamart-tables-update' table.id %}'">
                         <h5 class='card-title'>{{table.name}} 🎲</h5>
                     </div>
                     <div class='card-table-datamart-body'>

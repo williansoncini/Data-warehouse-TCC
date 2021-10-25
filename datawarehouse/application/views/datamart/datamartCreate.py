@@ -24,9 +24,14 @@ class DatamartCreate(View):
                 if datamartExistentInServerDb == None:
                     datamartSavedBoolean = tryCreateDatabaseFromDatamartReturningBoolean(datamart)
                     if datamartSavedBoolean:
+                        messages.success(request,'Data mart saved!')
                         datamart.save()
                 else:
+                    messages.success(request,'Data mart saved!')
                     datamart.save()
+            else:
+                print('Datamart já existente: ', datamartExistentInSystemDb.name)
+                messages.warning(request,'Data mart already exists!')
         else:
             if datamartExistentInSystemDb == None:
                 host = request.POST.get('datamart-host','')
@@ -38,9 +43,11 @@ class DatamartCreate(View):
 
                 if databaseOrNone != None:
                     dataMart = formingDatamartWithParameters(datamartName,database,host,port,user,password)
+                    messages.success(request,'Data mart saved!')
                     dataMart.save()
             else:
                 print('Datamart já existente: ', datamartExistentInSystemDb.name)
+                messages.warning(request,'Data mart already exists!')
         return redirect('application:datamart-list')
 
 def getDefaultConectionDataMart():

@@ -15,7 +15,9 @@
                 <tr>
                     <th scope="col">COLUMN</th>
                     <th scope="col">TYPE</th>
-                    <th scope="col">ACTIONS</th>
+                    {% if createTableAutomatically %}
+                        <th scope="col">ACTIONS</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -23,18 +25,21 @@
                 <tr>
                     <td>{{column.name}}</td>
                     <td>{{column.typeColumn}}</td>
-                    <td>
-                        <button type='button' class="btn btn-primary btn-sm" id='column_{{column.id}}' onClick="location.href='{% url 'application:updateStagingArea' tableStagingArea.pk column.id %}'" >Edit</button>  
-                        <button type='button' class="btn btn-danger btn-sm" id='column_{{column.id}}' onClick="location.href='{% url 'application:deleteStagingArea' tableStagingArea.pk column.id %}'" >Delete</button>
-                    </td>            
+                    {% if createTableAutomatically %}
+                        <td>
+                            <button type='button' class="btn btn-primary btn-sm" id='column_{{column.id}}' onClick="location.href='{% url 'application:updateStagingArea' tableStagingArea.pk column.id %}'" >Edit</button>  
+                            <button type='button' class="btn btn-danger btn-sm" id='column_{{column.id}}' onClick="location.href='{% url 'application:deleteStagingArea' tableStagingArea.pk column.id %}'" >Delete</button>
+                        </td>            
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
-        <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-success align-items-center" onclick="location.href='{% url 'application:createColumnStagingArea' tableStagingArea.pk %}'">Add column</button>
-        </div>
+        {% if createTableAutomatically %}
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-success align-items-center" onclick="location.href='{% url 'application:createColumnStagingArea' tableStagingArea.pk %}'">Add column</button>
+            </div>
+        {% endif %}
         <h5> Data visualization 🔍 </h5>
         <div>
             {% if data %}

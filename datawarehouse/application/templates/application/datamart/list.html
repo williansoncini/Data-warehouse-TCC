@@ -10,6 +10,14 @@
         <button class='btn btn-primary' >Search</button>
     </div>
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class='alert alert-{{message.tags}} mb-2'>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <div class='d-flex flex-wrap'>
         {% for datamart in datamarts %}
             <div class='datamarts-list' onClick="location.href='{% url 'application:datamart-detail' datamart.id %}'">

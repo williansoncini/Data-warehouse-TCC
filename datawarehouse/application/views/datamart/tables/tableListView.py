@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from application.models import TableDataMart
 
-class TableListView(View):
+class TableDatamartListView(View):
     def get(self,request):
         datamartTables = TableDataMart.objects.all()
         

@@ -7,7 +7,7 @@ class DatamartView(View):
     
     def get(self, request, *args, **kwargs):
         datamarts = Datamart.objects.all()
-
+    
         return render(request, 'application/datamart/list.html', {
             'datamarts': datamarts
         })

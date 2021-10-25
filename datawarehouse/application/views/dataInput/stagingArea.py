@@ -1,11 +1,13 @@
-from django.http.response import HttpResponse
-from application.forms import ColumnStagingAreaForm
-from application.services.database.stagingArea import connect, makeSelectStatement, makeStatementCreateTable
-from application.models import ColumnStagingArea,TableStagingArea
+from application.services.database.datamart import dropCreateTable, importFileInDatamart
+from application.services.database.stagingArea import clearStagingArea, connect, makeSelectStatement, makeStatementCreateTable
+from application.models import ColumnDataMart, ColumnStagingArea, Datamart, TableDataMart,TableStagingArea
 from django.shortcuts import get_object_or_404, redirect, render
+from os import path
+from application.services.database.stagingArea import exportSelectToCsv
 
 def StagingAreaDetail(request):
     if request.method == 'GET':
+        createTableAutomatically = request.session['createTableAutomatically']
         tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
         columnsStagingArea = ColumnStagingArea.objects.filter(table=tableStagingArea.id)
 
@@ -22,7 +24,8 @@ def StagingAreaDetail(request):
             'tableStagingArea':tableStagingArea,
             'columnsStagingArea':columnsStagingArea,
             'data':data,
-            'datamartDestiny': datamartDestiny
+            'datamartDestiny': datamartDestiny,
+            'createTableAutomatically': createTableAutomatically
         })
     else:
         tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
@@ -61,7 +64,7 @@ def createColumnStagingArea(request, table_id):
         cur = conn.cursor()
         cur.execute('ALTER TABLE IF EXISTS {} ADD COLUMN {} {};'.format(tableStagingArea.tableName,
             columnStagingArea.name,
-            columnStagingArea.typeColumn
+            columnStagingArea.type
         ))
         cur.close()
         conn.commit()
@@ -99,8 +102,8 @@ def updateColumnStagingArea(request, table_id, column_id):
             columnStagingArea.save()
 
         print('tipo novo: ', newColumnType)
-        print('tipo antigo: ', columnStagingArea.typeColumn)
-        if newColumnType != columnStagingArea.typeColumn:
+        print('tipo antigo: ', columnStagingArea.type)
+        if newColumnType != columnStagingArea.type:
             try:
                 conn = connect()
                 cur = conn.cursor()
@@ -112,16 +115,16 @@ def updateColumnStagingArea(request, table_id, column_id):
                     ))
                 print("ALTER TABLE IF EXISTS {} ALTER COLUMN {} TYPE {} USING {}::{};".format(tableStagingArea.tableName,
                     columnStagingArea.name,
-                    columnStagingArea.typeColumn,
+                    columnStagingArea.type,
                     columnStagingArea.name,
-                    columnStagingArea.typeColumn
+                    columnStagingArea.type
                     ))
 
                 cur.close()
                 conn.commit()
                 conn.close()
          
-                columnStagingArea.typeColumn = newColumnType
+                columnStagingArea.type = newColumnType
                 columnStagingArea.save()
             except:
                 print('Tipo de dados não suportado pela coluna')
@@ -164,20 +167,59 @@ def deleteTableStagingArea(request, table_id):
     return redirect ('application:home')
 
 def statementView(request):
+    createTableAutomatically = request.session['createTableAutomatically']
+    tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
+    
     if request.method == 'GET':
-        tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
-        
-        print(tableStagingArea.statementCreateTable)
-
         return render(request,'application/stagingArea/statement.html',{
             'statementCreateTable': tableStagingArea.statementCreateTable,
-            'statementSelect': tableStagingArea.statementSelect
+            'statementSelect': tableStagingArea.statementSelect,
+            'createTableAutomatically':createTableAutomatically
         })
     else:
-        tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
         tableStagingArea.statementCreateTable = request.POST.get('statementCreateTable','')
         tableStagingArea.statementSelect = request.POST.get('statementSelect','')
         tableStagingArea.save()
 
-        return HttpResponse('sucess!')
+        #gerar o arquivo CSV
+        with open(path.dirname(__file__) + '/../../../exports/teste1.csv', 'w+') as csvFile:
+            exportSelectToCsv(tableStagingArea.statementSelect, csvFile)
+            datamart = Datamart.objects.get(name=request.session['datamartSelected'])
+            datamart.database = str(datamart.database).lower()
+            print(datamart)
+            
+            dropCreateTableStatement = str(tableStagingArea.statementCreateTable)
+            dropCreateTableStatement = dropCreateTableStatement.strip()
+            tableName = str(tableStagingArea.tableName).lower()
+
+            if(createTableAutomatically):
+                dropCreateTable(datamart,dropCreateTableStatement)
         
+        file = open(path.dirname(__file__) + '/../../../exports/teste1.csv', 'r')
+        importFileInDatamart(datamart,tableName,file)
+        file.close()
+
+        (tableDatamart,__) = TableDataMart.objects.get_or_create(
+            datamart=datamart,
+            name=tableStagingArea.tableName
+        )
+        tableDatamart.save()
+
+        columnStagingArea = ColumnStagingArea.objects.filter(table_id=tableStagingArea.id)
+        for column in columnStagingArea:
+            (newColumnDatamart,__) = ColumnDataMart.objects.get_or_create(
+                table=tableDatamart,
+                name=column.name,
+                type=column.typeColumn
+            )
+            newColumnDatamart.save()
+        
+        #limpar StagingArea
+        clearStagingArea(tableName)
+        columnStagingArea.delete()
+        tableStagingArea.delete()
+
+        return redirect('application:home')
+        # return HttpResponse('sucess!')
+        
+    

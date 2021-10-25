@@ -44,8 +44,20 @@
         </div>
 
         <div class='container-separator'>
-            <h5>Data 🎲</h5>
-           
+            <h5> Data visualization 🔍 </h5>
+            <div>
+                {% if data %}
+                    <table class='table table-sm table-striped table-dark '>
+                        {% for row in data %}
+                        <tr>
+                            {% for cedule in row %}
+                                <td> {{cedule}} </td>  
+                            {% endfor %}
+                        </tr>            
+                        {% endfor %}
+                    </table>
+                {% endif %}
+            </div>
         </div>
         <div>
             <button type="submit" class="btn btn-success mt-3"> Delete </button>

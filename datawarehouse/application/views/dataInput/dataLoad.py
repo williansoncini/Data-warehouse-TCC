@@ -1,5 +1,5 @@
 from django.core.files.storage import FileSystemStorage
-from application.services.database.stagingArea import createTableForEtl, importCsvFileInTableWithHeader,importCsvFileInTableWithOutHeader, createTable
+from application.services.database.stagingArea import createTableForEtl, dropTable, importCsvFileInTableWithHeader,importCsvFileInTableWithOutHeader, createTable
 from application.models import ColumnDataMart, ColumnStagingArea, TableDataMart, TableStagingArea, TemporaryFile, CsvFile
 from django.shortcuts import redirect, render
 from application.services.file.csvService import getColumnsFromCsvFile, getFirstTwentyLinesFromFile, getTypeOfColumnsFromCsvFile, makeDicWithColumnType, makeFakeColumnsFromCsvFile
@@ -40,29 +40,35 @@ def showDataFromFile(request):
             # deleteFile(filePath)
             return redirect('application:stagingArea')
         else:
-            ############## MUDANÇA ################
-            # ADICIONAR IF PARA PEGAR A TABELA QUE O USUÁRIO SELECIONOU EM VEZ DE CRIAR SEMPRE COM O ARQUIVO CSV 
-            #Create table a partir da tabela que o usuário indicou
             datamartTable = TableDataMart.objects.get(name=request.session['tableSelected'])
-            datamartColumns = ColumnDataMart.objects.filter(table=datamartTable)
+            datamartColumns = ColumnDataMart.objects.filter(table=datamartTable).order_by('id')
+            tableName = str(datamartTable.name).lower()
 
-            statement = 'CREATE TABLE {}('.format(datamartTable.name)
+            statement = 'CREATE TABLE {}('.format(tableName)
             lengthDatamartColumns = len(datamartColumns)
             for index, column in enumerate(datamartColumns):
                 if index != lengthDatamartColumns-1:
                     statement+='{} {},'.format(column.name,column.type)
                 else:
                     statement+='{} {});'.format(column.name,column.type)
-
-            createTable(statement)
             
-            if inputDataWithCsvHeader:
-                importCsvFileInTableWithHeader(filePath,datamartTable.name)
-            else:
-                importCsvFileInTableWithOutHeader(filePath,datamartTable.name)
+            dropTable(tableName)
+            createTable(statement)
 
-            (tableStagingArea,__) = TableStagingArea.objects.get_or_create(tableName=datamartTable.name)
+            (tableStagingArea,__) = TableStagingArea.objects.get_or_create(tableName=tableName)
             request.session['pkTableStagingArea'] = tableStagingArea.id
+
+            for column in datamartColumns:
+                (columnStagingArea,_) = ColumnStagingArea.objects.get_or_create(
+                    table=tableStagingArea,
+                    name=column.name,
+                    typeColumn=column.type)
+
+            if inputDataWithCsvHeader:
+                importCsvFileInTableWithHeader(filePath,tableName)
+            else:
+                importCsvFileInTableWithOutHeader(filePath,tableName)
+
             return redirect('application:stagingArea')
     else:
         temporaryFile = TemporaryFile.objects.get(pk=request.session['tempFilePk'])

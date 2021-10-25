@@ -21,7 +21,7 @@ class Datamart(models.Model):
     localdatabase = BooleanField(default='0')
 
     class Meta:
-        ordering = ('-name',)
+        ordering = ('-updated',)
 
     def __str__(self):
         return self.name
@@ -32,13 +32,13 @@ class TableDataMart(models.Model):
         ('inactive', 'Inactive'),
     )
     datamart = models.ForeignKey(Datamart, related_name='table_datamart', on_delete=models.CASCADE)
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20,choices=STATUS_CHOICES,default='Active')
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ('-name',)
+        ordering = ('-updated',)
 
     def __str__(self):
         return self.name
@@ -72,11 +72,11 @@ class TableDataMart(models.Model):
 class ColumnDataMart(models.Model):
     table = models.ForeignKey(TableDataMart, on_delete=models.CASCADE, related_name='column_datamart')
     # typeSimple = models.ForeignKey(TypeData, on_delete=models.CASCADE, related_name='column_typeSimple')
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     type = models.CharField(max_length=50)
 
     class Meta:
-        ordering = ('-name',)
+        ordering = ('id',)
 
     def __str__(self):
         return self.name
@@ -96,7 +96,7 @@ class TemporaryFile(models.Model):
     size = models.FloatField()
 
     class Meta:
-        ordering = ('-name',)
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
