@@ -122,3 +122,53 @@ def alterTypeFromTable(datamart, tableName, columnName, newColumnType):
     conn.close()
 
     return True
+
+def renameTable(datamart, oldTableName, newTableName):
+    database = datamart.database
+    host = datamart.host
+    user = datamart.user
+    password = datamart.password
+    port = datamart.port
+
+    conn = connectInDatamartWithParameters(database, host, user, password, port)
+    cur = conn.cursor()
+    cur.execute('ALTER TABLE {} RENAME TO {};'.format(oldTableName, newTableName))
+    cur.close()
+    conn.commit()
+    conn.close()
+
+    return True
+
+def checkExistentTable(datamart, tableName):
+    database = datamart.database
+    host = datamart.host
+    user = datamart.user
+    password = datamart.password
+    port = datamart.port
+
+    conn = connectInDatamartWithParameters(database, host, user, password, port)
+    cur = conn.cursor()
+    cur.execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='{}' AND TABLE_SCHEMA='public'".format(tableName))
+    data = cur.fetchall()
+    cur.close()
+    conn.commit()
+    conn.close()
+
+    if (data != None):
+        return True
+
+def deleteColumnDatamart(datamart, tableName, columnName):
+    database = datamart.database
+    host = datamart.host
+    user = datamart.user
+    password = datamart.password
+    port = datamart.port
+
+    conn = connectInDatamartWithParameters(database, host, user, password, port)
+    cur = conn.cursor()
+    cur.execute("ALTER TABLE {} DROP COLUMN IF EXISTS {};".format(tableName, columnName))
+    cur.close()
+    conn.commit()
+    conn.close()
+
+    return True

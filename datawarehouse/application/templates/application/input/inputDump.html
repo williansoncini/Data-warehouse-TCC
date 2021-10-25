@@ -1,18 +1,24 @@
 {% extends 'application/base.html' %}
 
 {% block content %}
-    <h1>DUMP</h1>
-    <form method="post" enctype='multipart/form-data'>
+    <h3>DUMP</h3>
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" name="dumpFile" accept>
-        <button type="submit"> Carregar arquivo </button>
+        <div class='mb-1'>
+            <label for="formFile" class="form-label">Input DUMP here 🎲 </label>
+            <input class="form-control" type="file" id="formFile" name="dumpFile" >
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class='alert alert-danger mb-2'>
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div>
+            <button type="submit" class="btn btn-success"> Continue </button>
+            <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'">Cancel </button>
+        </div>
     </form>
-
-    {% if mensagem %}
-        <h1>{{mensagem}}</h1>
-    {% endif %} 
-
-    <a href="http://localhost:8000/application"> Voltar </a>
-
 {% endblock content %}
 

@@ -1,0 +1,28 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class='alert alert-{{message.tags}} mb-2'>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h5 class='titles'>Delete column ❎</h5>  
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" id="input">Column name</span>
+            <input type="text" class="form-control" value="{{column.name}}" name="columnName" readonly="true">
+        </div> 
+        <div class="mb-2">
+            <div class="input-group input-group-lg mb-3 ">
+                <span class="input-group-text" id="input">Column type</span>
+                <input type="text" class="form-control" value="{{column.type}}" name="columnType" readonly="true">
+            </div> 
+        </div>
+        <button type="submit" class="btn btn-success">Delete</button>
+        <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:stagingArea'%}'">Cancel</button>
+    </form>
+{% endblock content %}

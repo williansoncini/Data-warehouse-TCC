@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
+from django.views.generic.base import View
 from application.services.database.stagingArea import connect
 
-def inputDumpFile(request):
-    retorno = {}
-    if request.method == 'POST':
+class DumpFile(View):
+    def get(self, request):
+        return render(request, 'application/input/inputDump.html')
 
+    def post(request):
         file = request.FILES['dumpFile']
         fs = FileSystemStorage()
         name = fs.save(file.name, file)
@@ -20,7 +22,3 @@ def inputDumpFile(request):
             cur.close()
             conn.commit()
             conn.close()
-
-        retorno['mensagem'] = 'Arquivo DUMP carregado com sucesso!'
-
-    return render(request, 'application/input/inputDump.html',retorno)

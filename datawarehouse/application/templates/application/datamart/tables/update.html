@@ -38,11 +38,11 @@
                 <tbody>
                     {% for column in columnsDatamart %}
                     <tr>
-                        <td>{{column.name}}</td>
+                        <td class=''>{{column.name}}</td>
                         <td>{{column.type}}</td>
                         <td>
                             <button type='button' class="btn btn-primary btn-sm" id='column_{{column.id}}' onClick="location.href='{% url 'application:datamart-columns-update' tableDatamart.id column.id %}'">Edit</button>  
-                            <button type='button' class="btn btn-danger btn-sm" id='column_{{column.id}}' >Delete</button>
+                            <button type='button' class="btn btn-danger btn-sm" id='column_{{column.id}}' onClick="location.href='{% url 'application:datamart-columns-delete' tableDatamart.id column.id %}'">Delete</button>
                         </td>            
                     </tr>
                     {% endfor %}

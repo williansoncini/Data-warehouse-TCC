@@ -1,4 +1,6 @@
+from application.views.dataInput.dump import DumpFile
 from application.views.datamart.tables.columns.createColumnView import CreateColumnDatamartView
+from application.views.datamart.tables.columns.deleteColumnDatamartView import DeleteColumnDatamartView
 from application.views.datamart.tables.columns.updateColumnDatamartView import UpdateColumnDatamartView
 from application.views.datamart.tables.pre_TableCreateView import PreTableDatamartCreateView
 from application.views.datamart.tables.tableCreateView import TableDatamartCreateView
@@ -15,7 +17,7 @@ from .views.dataInput.datamart.selectDatamart import SelectDatamart
 from .views.dataInput.datamart.selectTableDatamart import SelectTableDatamart
 from .views.dataInput.files.selectFormInputView import SelectFormInputView
 # from .views.datamart import Datamart
-from .views.dataInput import csv,dump, query
+from .views.dataInput import csv, query
 from .views.home import home
 from django.urls import path
 
@@ -28,7 +30,7 @@ urlpatterns = [
     path('input/datamart/table',SelectTableDatamart.as_view(), name='select-table-datamart'),
     path('input/files/', SelectFormInputView.as_view(), name='files-input'),
     path('input/csv/', csv.inputCsvFile, name='csv-input'),
-    path('input/dump/', dump.inputDumpFile, name='dump-input'),
+    path('input/dump/', DumpFile.as_view(), name='dump-input'),
     path('input/query/', query.inputFromQuerySQL, name='sql-input'),
     path('input/preImportFile/', dataLoad.showDataFromFile, name='data_load'),
 
@@ -50,6 +52,7 @@ urlpatterns = [
     path('datamart/tables/delete/<int:table_id>/',TableDatamartDeleteView.as_view(), name='datamart-tables-delete'),
     path('datamart/tables/columns/create/<int:table_id>/',CreateColumnDatamartView.as_view(), name='datamart-columns-create'),
     path('datamart/tables/columns/update/<int:table_id>/<int:column_id>/',UpdateColumnDatamartView.as_view(), name='datamart-columns-update'),
+    path('datamart/tables/columns/delete/<int:table_id>/<int:column_id>/',DeleteColumnDatamartView.as_view(), name='datamart-columns-delete'),
 
     # path('datamart/',datamart.show, name='datamart-list')
 ]
