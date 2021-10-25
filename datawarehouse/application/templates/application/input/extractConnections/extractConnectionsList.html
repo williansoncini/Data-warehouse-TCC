@@ -1,0 +1,25 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    <div class='d-flex justify-content-between'>
+        <h5 class='titles'>Extract connections 🌐</h5>  
+        <button class='btn btn-primary mb-2' onClick="location.href='{% url 'application:extract-connections-create' %}'">Create</button>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class='alert alert-{{message.tags}} mb-2'>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class='d-flex flex-wrap'>
+        {% for connection in extractConnections %}
+            <div class='datamarts-list'>
+                {{connection.name}} 
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock  %}

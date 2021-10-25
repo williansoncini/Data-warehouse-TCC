@@ -1,11 +1,16 @@
+from django.views.generic.base import View
 import psycopg2
 from ...services.file.csvService import makeNewCsvFile
 from django.shortcuts import render
 from ...forms import QueryForm
 from application.services.database.stagingArea import connect
 
-def inputFromQuerySQL(request):
-    if request.GET:
+class QueryInput(View):
+    def get(self, request):
+        queryForm = QueryForm()
+        return render(request, 'application/input/inputQuery.html', {'queryForm': queryForm})
+
+    def post(self, request):
         queryText = request.GET['query']
 
         conn = connect()
@@ -46,6 +51,3 @@ def inputFromQuerySQL(request):
             'mensagem': mensagem, 
             'colunas':colunas, 
             'dados': dados})
-    else:
-        queryForm = QueryForm()
-        return render(request, 'application/input/inputQuery.html', {'queryForm': queryForm})

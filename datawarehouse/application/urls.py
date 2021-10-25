@@ -1,4 +1,7 @@
+from application.views.dataInput.ExtractConnetions.extractConnectionCreateView import ExtractConnectionCreateView
+from application.views.dataInput.ExtractConnetions.extractConnectionListView import ExtractConnectionsListView
 from application.views.dataInput.dump import DumpFile
+from application.views.dataInput.query import QueryInput
 from application.views.datamart.tables.columns.createColumnView import CreateColumnDatamartView
 from application.views.datamart.tables.columns.deleteColumnDatamartView import DeleteColumnDatamartView
 from application.views.datamart.tables.columns.updateColumnDatamartView import UpdateColumnDatamartView
@@ -17,7 +20,7 @@ from .views.dataInput.datamart.selectDatamart import SelectDatamart
 from .views.dataInput.datamart.selectTableDatamart import SelectTableDatamart
 from .views.dataInput.files.selectFormInputView import SelectFormInputView
 # from .views.datamart import Datamart
-from .views.dataInput import csv, query
+from .views.dataInput import csv
 from .views.home import home
 from django.urls import path
 
@@ -31,8 +34,11 @@ urlpatterns = [
     path('input/files/', SelectFormInputView.as_view(), name='files-input'),
     path('input/csv/', csv.inputCsvFile, name='csv-input'),
     path('input/dump/', DumpFile.as_view(), name='dump-input'),
-    path('input/query/', query.inputFromQuerySQL, name='sql-input'),
+    path('input/query/', QueryInput.as_view(), name='sql-input'),
     path('input/preImportFile/', dataLoad.showDataFromFile, name='data_load'),
+
+    path('input/Extractconnections/', ExtractConnectionsListView.as_view(), name='extract-connections'),
+    path('input/Extractconnections/create', ExtractConnectionCreateView.as_view(), name='extract-connections-create'),
 
     path('input/stagingArea', stagingArea.StagingAreaDetail, name='stagingArea'),
     path('input/stagingArea/deleteTable/<int:table_id>/', stagingArea.deleteTableStagingArea, name='deleteTableStagingArea'),

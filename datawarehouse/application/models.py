@@ -127,3 +127,17 @@ class importationDatamart(models.Model):
     tableDatamart = ForeignKey(TableDataMart, on_delete=CASCADE, related_name='importation_tableDatamart')
     type = CharField(max_length=10)
     created = DateTimeField(auto_now_add=True)
+
+class ExtractConnection(models.Model):
+    name = models.CharField(max_length=250, unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    database = CharField(max_length=50)
+    user = CharField(max_length=50)
+    password = CharField(max_length=50)
+    host = CharField(max_length=20)
+    port = IntegerField()
+    localdatabase = BooleanField(default='0')
+
+    def __str__(self):
+        return self.name
