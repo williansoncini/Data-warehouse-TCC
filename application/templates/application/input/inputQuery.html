@@ -1,0 +1,32 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    <script>
+        document.onkeydown = function (t) {
+            if(t.which == 9){
+                return false;
+            }            
+        }
+    </script>
+    <h5 class='titles'>Staging Area - Query</h5>  
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <h5>Extract Conenction 🌐</h5>
+        <select class='form-select mb-4' arial-label='Select data mart' name='selectExtractConnection'>
+            <option selected value='None'>Open this select menu</option>
+            {% for connection in extractConnections %}
+                <option value="{{connection}}">{{connection}}</option>
+            {% endfor %}
+        </select>
+
+        <h5>Select table 🔍<i class='fas fa-table'></i> </h5>
+        <div>
+            <textarea name="statementSelect" class="text-edit" rows=10 data-toggle="tab">{{statementSelect}}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Continue</button>
+        <button type="reset" class="btn btn-primary">Clear</button>
+        <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'">Cancel</button>
+    </form>    
+
+{% endblock content %}
