@@ -16,7 +16,7 @@
 
     <div class='d-flex flex-wrap'>
         {% for connection in extractConnections %}
-            <div class='datamarts-list'>
+            <div class='datamarts-list' onClick="location.href='{% url 'application:extract-connections-update' connection.id %}'">
                 {{connection.name}} 
             </div>
         {% endfor %}

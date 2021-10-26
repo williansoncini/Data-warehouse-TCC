@@ -1,0 +1,51 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class='alert alert-{{message.tags}} mb-2'>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h5 class='titles'>Extract Connection - Update 🌐</h5>  
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-group input-group-lg mb-3 ">
+            <span class="input-group-text" id="input">Connection name</span>
+            <input type="text" class="form-control" name="name" value="{{extractConnection.name}}"">
+        </div> 
+        <h3> Connetion 🌐</h3>
+
+        <div id='connection-datamart'>
+            <div class="input-group input-group-lg mb-3 ">
+                <span class="input-group-text" >Database name</span>
+                <input type="text" class="form-control" name="databaseName" value="{{extractConnection.database}}">
+            </div>
+
+            <div class="input-group input-group-lg mb-3 ">
+                <span class="input-group-text" >Host</span>
+                <input type="text" class="form-control" name="host" value="{{extractConnection.host}}">
+            </div>
+            <div class="input-group input-group-lg mb-3 ">
+                <span class="input-group-text" >Port</span>
+                <input type="number" class="form-control" name="port" value="{{extractConnection.port}}">
+            </div>
+            <div class="input-group input-group-lg mb-3 ">
+                <span class="input-group-text" >Username</span>
+                <input type="text" class="form-control" name="username" value="{{extractConnection.user}}">
+            </div>
+            <div class="input-group input-group-lg">
+                <span class="input-group-text" >Password</span>
+                <input type="text" class="form-control" name="password" value="{{extractConnection.password}}">
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-success mt-3"> Save </button>
+            <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:extract-connections' %}'">Cancel </button>
+            <button type="button" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:extract-connections-delete' extractConnection.id %}'"> Delete </button>
+        </div>
+    </form>
+
+{% endblock %}

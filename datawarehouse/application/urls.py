@@ -1,5 +1,7 @@
 from application.views.dataInput.ExtractConnetions.extractConnectionCreateView import ExtractConnectionCreateView
+from application.views.dataInput.ExtractConnetions.extractConnectionDeleteView import ExtractConnectionDeleteView
 from application.views.dataInput.ExtractConnetions.extractConnectionListView import ExtractConnectionsListView
+from application.views.dataInput.ExtractConnetions.extractConnectionUpdateView import ExtractConnectionUpdateView
 from application.views.dataInput.dump import DumpFile
 from application.views.dataInput.query import QueryInput
 from application.views.datamart.tables.columns.createColumnView import CreateColumnDatamartView
@@ -39,6 +41,8 @@ urlpatterns = [
 
     path('input/Extractconnections/', ExtractConnectionsListView.as_view(), name='extract-connections'),
     path('input/Extractconnections/create', ExtractConnectionCreateView.as_view(), name='extract-connections-create'),
+    path('input/Extractconnections/update/<int:extractConnection_id>/', ExtractConnectionUpdateView.as_view(), name='extract-connections-update'),
+    path('input/Extractconnections/delete/<int:extractConnection_id>/', ExtractConnectionDeleteView.as_view(), name='extract-connections-delete'),
 
     path('input/stagingArea', stagingArea.StagingAreaDetail, name='stagingArea'),
     path('input/stagingArea/deleteTable/<int:table_id>/', stagingArea.deleteTableStagingArea, name='deleteTableStagingArea'),
