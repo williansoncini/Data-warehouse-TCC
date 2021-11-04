@@ -32,7 +32,7 @@ class TableDataMart(models.Model):
         ('inactive', 'Inactive'),
     )
     datamart = models.ForeignKey(Datamart, related_name='table_datamart', on_delete=models.CASCADE)
-    name = models.CharField(max_length=250, unique=True)
+    name = models.CharField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20,choices=STATUS_CHOICES,default='Active')
     updated = models.DateTimeField(auto_now=True)
@@ -110,6 +110,18 @@ class ExtractConnection(models.Model):
     host = CharField(max_length=20)
     port = IntegerField()
     localdatabase = BooleanField(default='0')
+
+    def __str__(self):
+        return self.name
+
+class TableDatawarehouse(models.Model):
+    name = models.CharField(max_length=250)
+    created = models.DateTimeField(auto_now_add=True)
+    # status = models.CharField(max_length=20,choices=STATUS_CHOICES,default='Active')
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('-updated',)
 
     def __str__(self):
         return self.name

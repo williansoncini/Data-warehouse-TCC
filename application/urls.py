@@ -15,6 +15,7 @@ from application.views.datamart.tables.tableDeleteView import TableDatamartDelet
 from application.views.datamart.datamart import DatamartView
 from application.views.datamart.datamartDelete import DatamartDelete
 from application.views.datamart.tables.tableUpdateView import TableDatamartUpdateView
+from application.views.datawarehouse.tables.listTableDatawarehouse import ListTableDatawarehouse
 from .views.dataInput import stagingArea
 from .views.datamart.datamart import DatamartView
 from .views.datamart.datamartUpdate import DatamartUpdate
@@ -65,4 +66,8 @@ urlpatterns = [
     path('datamart/tables/columns/create/<int:table_id>/',CreateColumnDatamartView.as_view(), name='datamart-columns-create'),
     path('datamart/tables/columns/update/<int:table_id>/<int:column_id>/',UpdateColumnDatamartView.as_view(), name='datamart-columns-update'),
     path('datamart/tables/columns/delete/<int:table_id>/<int:column_id>/',DeleteColumnDatamartView.as_view(), name='datamart-columns-delete'),
+
+    path('datawarehouse/tables/', ListTableDatawarehouse.as_view(), name='datawarehouse-tables'),
+    # path('datamart/tables/columns/update/<int:table_id>/<int:column_id>/',UpdateColumnDatamartView.as_view(), name='datamart-columns-update'),
+    # path('datamart/tables/columns/delete/<int:table_id>/<int:column_id>/',DeleteColumnDatamartView.as_view(), name='datamart-columns-delete'),
 ]

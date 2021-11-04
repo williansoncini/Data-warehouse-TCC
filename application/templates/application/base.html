@@ -14,7 +14,7 @@
         <ul class="list-unstyled">
             <li class="mb-1">
                 <button class='btn btn-toggle align-items-center rounded collapsed'  data-bs-toggle="collapse" data-bs-target="#input-side-bar" aria-expanded="true">
-                    Data
+                    Data 🔼
                 </button>
                 <div class='collapse show' id='input-side-bar'>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -26,7 +26,7 @@
             <li class="border-top my-3"></li>
             <li class="mb-1">
                 <button class='btn btn-toggle align-items-center rounded collapsed' data-bs-toggle="collapse" data-bs-target="#datamart-side-bar" aria-expanded="true">
-                    Data mart
+                    Data mart 🔄
                 </button>
                 <div class='collapse show' id='datamart-side-bar'>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -35,7 +35,20 @@
                     </ul>
                 </div>
             </li>
-            <li class="border-top my-3"></li>
+            <li class="border-top my-3">
+            <li class="mb-1">
+                <button class='btn btn-toggle align-items-center rounded collapsed' data-bs-toggle="collapse" data-bs-target="#datawarehouse-side-bar" aria-expanded="true">
+                    Data warehouse 🎲
+                </button>
+                <div class='collapse show' id='datawarehouse-side-bar'>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        {% comment %} <li class='link-dark rounded'><a href="{% url 'application:datamart-list' %}"> Data marts </a></li> {% endcomment %}
+                        <li class='link-dark rounded'><a href="{% url 'application:datawarehouse-tables' %}"> Tables </a></li>
+                        <li class='link-dark rounded'><a href="#"> Cubes 🧊🧊🧊 </a></li>
+                    </ul>
+                </div>
+            </li>
+            </li>
         </ul>
     </div>
     <div class='flex-shrink-0 p-3 bg-white content border rounded'>
