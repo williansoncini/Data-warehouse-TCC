@@ -23,7 +23,7 @@ def connectLocalDatamart():
             host=getenv('STAGING_AREA_HOST'),
             user=getenv('STAGING_AREA_USERNAME'),
             password=getenv('STAGING_AREA_PASSWORD'),
-            post=getenv('STAGING_AREA_PORT')
+            port=getenv('STAGING_AREA_PORT')
         )
 
         return conn
@@ -45,6 +45,21 @@ def importFileInDatamart(datamart, tableDatamart, csvFile):
     cur.close()
     conn.commit()
     conn.close()
+
+def exportSelectToCsv(datamart,select,file):
+    conn = psycopg2.connect(
+        database= datamart.database,
+        host=datamart.host,
+        user=datamart.user,
+        password=datamart.password,
+        port=datamart.port
+    )
+    cur = conn.cursor()
+    sql = "COPY ({}) to stdout WITH CSV HEADER DELIMITER ';'".format(select)
+    cur.copy_expert(sql, file)
+    cur.close()
+    conn.commit()
+    conn.close()      
 
 def dropCreateTable(datamart, dropCreateTableStatement):
     conn = psycopg2.connect(

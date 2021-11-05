@@ -14,6 +14,7 @@ class DatamartCreate(View):
     def post(self, request):
         checkboxCreateDatamartUsingDefaultConnection = request.POST.get('datamart-check')
         datamartName=request.POST.get('datamart-name','')
+        datamartName = datamartName.lower()
         database = request.POST.get('datamart-databaseName','')
         datamartExistentInSystemDb = Datamart.objects.filter(name=datamartName).first()
         

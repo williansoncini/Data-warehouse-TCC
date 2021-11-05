@@ -2,12 +2,9 @@
 
 {% block content %}
     <div class='d-flex justify-content-between'>
-        <h5 class='titles'>Data marts</h5>  
+        <h5 class='titles'>Data marts 🔄</h5>  
         <button class='btn btn-primary mb-2' onClick="location.href='{% url 'application:datamart-create' %}'">Create</button>
-    </div>
-    <div class='d-flex mb-2'>
-        <input type="search" class="form-control" placeholder='Write data mart name here'>
-        <button class='btn btn-primary' >Search</button>
+        
     </div>
 
     {% if messages %}

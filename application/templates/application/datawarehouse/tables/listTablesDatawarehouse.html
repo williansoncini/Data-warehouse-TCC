@@ -10,19 +10,19 @@
     {% endif %}
 
     <div class='d-flex justify-content-between'>
-        <h5 class='titles'>Data warehouse</h5>  
-        <button class='btn btn-primary mb-2' >Create</button>
+        <h5 class='titles'>Data warehouse 🧊</h5>  
+        <button class='btn btn-primary m-2' onClick="location.href='{% url 'application:datawarehouse-import-select-datamart' %}'">import</button>
     </div>
 
     <div class='d-flex justify-content-between'>
-        <h5 class='titles'>Tables - Data warehouse</h5>  
+        <h5 class='titles'>Tables</h5>  
         {% comment %} <button class='btn btn-primary mb-2' onClick="location.href='{% url 'application:datamart-create' %}'">Create</button> {% endcomment %}
     </div>
 
     <div class='d-flex flex-wrap'>
         {% for table in tables %}
-            <div class='datamarts-list'>
-                {{datamart.name}} 🎲
+            <div class='datamarts-list' onClick="location.href='{% url 'application:datawarehouse-tables-delete' table.id %}'">
+                {{table.name}} 🎲
             </div>
         {% endfor %}
     </div>

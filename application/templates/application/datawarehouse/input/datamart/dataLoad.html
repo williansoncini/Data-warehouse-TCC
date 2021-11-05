@@ -1,0 +1,32 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class='alert alert-{{message.tags}} mb-2'>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h3>Datas 🎲 </h3>
+
+        <table class='table table-striped table-dark'>
+        {% for row in data %}
+            <tr>
+               {% for column in row %}
+                    <td>{{column}}</td>
+               {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <button type="submit" class="btn btn-success mt-3"> Import </button>
+            <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:home' %}'"> Cancel </button>
+        </div>
+    </form>
+
+{% endblock content %}

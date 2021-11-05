@@ -1,3 +1,4 @@
+from django.contrib import messages
 from application.services.database.datamart import dropCreateTable, importFileInDatamart
 from application.services.database.stagingArea import clearStagingArea, connect, makeSelectStatement, makeStatementCreateTable
 from application.models import ColumnDataMart, ColumnStagingArea, Datamart, TableDataMart,TableStagingArea
@@ -30,7 +31,18 @@ def StagingAreaDetail(request):
     else:
         tableStagingArea = TableStagingArea.objects.get(pk=request.session['pkTableStagingArea'])
         columnsStagingArea = ColumnStagingArea.objects.filter(table=tableStagingArea.id)
+        datamartDestiny = request.session['datamartSelected']
+        datamart = Datamart.objects.get(name=datamartDestiny)
+        createTableAutomatically = request.session['createTableAutomatically']
         newTableName = request.POST.get('tableName','')
+
+        tableDataMart = TableDataMart.objects.filter(name=newTableName, datamart=datamart).first()
+        print(tableDataMart)
+        if (tableDataMart != None and createTableAutomatically):
+            messages.warning(request,'Essa tabela já existe!')
+            return redirect('application:stagingArea')
+        
+        
 
         if tableStagingArea.tableName != newTableName:
             conn = connect()

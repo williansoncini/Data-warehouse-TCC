@@ -1,12 +1,24 @@
 {% extends 'application/base.html' %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class='alert alert-{{message.tags}} mb-2'>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <form method='post'>
         {% csrf_token %}
         <h5 class='titles'>Staging Area - Columns</h5>  
         <div class="input-group input-group-lg mb-3 ">
             <span class="input-group-text" id="input"> Table name </span>
-            <input type="text" class="form-control" value="{{tableStagingArea.tableName}}" name="tableName">
+            {% if createTableAutomatically %}
+                <input type="text" class="form-control" value="{{tableStagingArea.tableName}}" name="tableName">
+            {% else %}
+                <input type="text" class="form-control" value="{{tableStagingArea.tableName}}" name="tableName" readonly="true">
+            {% endif %}
         </div> 
 
         <h5>Columns ✅</h5>

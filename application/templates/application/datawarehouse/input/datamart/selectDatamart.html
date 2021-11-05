@@ -1,0 +1,33 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    <div>
+        <div>
+           <h5 class='titles'>Select datamart to input data 🎲</h5>  
+        </div>
+        <form  method="post">
+            {% csrf_token %}
+            <h5>Data mart 🎲</h5>
+            <select class='form-select mb-4' arial-label='Select data mart' name='selectedDatamart'>
+                <option selected value='None'>Open this select menu</option>
+                {% for datamart in datamarts %}
+                    <option value="{{datamart}}">{{datamart}}</option>
+                {% endfor %}
+            </select>
+
+            
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger mb-4" role="alert">
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}   
+
+            <button type="submit" class="btn btn-success" onclick="location.href='{% url 'application:select-table-datamart' %}'">Continue</button>
+            <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'">Cancel</button>
+            <button type="reset" class="btn btn-primary" onClick="location.href='{% url 'application:datamart-create' %}'">Create datamart</button>
+        </form>         
+    </div>
+{% endblock content %}

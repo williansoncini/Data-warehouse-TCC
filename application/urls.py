@@ -15,7 +15,11 @@ from application.views.datamart.tables.tableDeleteView import TableDatamartDelet
 from application.views.datamart.datamart import DatamartView
 from application.views.datamart.datamartDelete import DatamartDelete
 from application.views.datamart.tables.tableUpdateView import TableDatamartUpdateView
+from application.views.datawarehouse.input.dataLoad import DatawarehouseDataLoad
+from application.views.datawarehouse.input.queryDatamart import QueryDatamartDatawarehouse
+from application.views.datawarehouse.tables.deleteTableDatawarehouse import DatawarehouseDeleteTable
 from application.views.datawarehouse.tables.listTableDatawarehouse import ListTableDatawarehouse
+from application.views.datawarehouse.input.selectDatamart import SelectDatamartToDatawarehouse
 from .views.dataInput import stagingArea
 from .views.datamart.datamart import DatamartView
 from .views.datamart.datamartUpdate import DatamartUpdate
@@ -67,7 +71,11 @@ urlpatterns = [
     path('datamart/tables/columns/update/<int:table_id>/<int:column_id>/',UpdateColumnDatamartView.as_view(), name='datamart-columns-update'),
     path('datamart/tables/columns/delete/<int:table_id>/<int:column_id>/',DeleteColumnDatamartView.as_view(), name='datamart-columns-delete'),
 
+    path('datawarehouse/import/datamart', SelectDatamartToDatawarehouse.as_view(), name='datawarehouse-import-select-datamart'),
+    path('datawarehouse/import/datamart/query', QueryDatamartDatawarehouse.as_view(), name='datawarehouse-import-datamart-query'),
+    path('datawarehouse/tables/dataload', DatawarehouseDataLoad.as_view(), name='datawarehouse-import-tables-data-load'),
     path('datawarehouse/tables/', ListTableDatawarehouse.as_view(), name='datawarehouse-tables'),
+    path('datawarehouse/tables/delete/<int:table_id>/', DatawarehouseDeleteTable.as_view(), name='datawarehouse-tables-delete'),
     # path('datamart/tables/columns/update/<int:table_id>/<int:column_id>/',UpdateColumnDatamartView.as_view(), name='datamart-columns-update'),
     # path('datamart/tables/columns/delete/<int:table_id>/<int:column_id>/',DeleteColumnDatamartView.as_view(), name='datamart-columns-delete'),
 ]

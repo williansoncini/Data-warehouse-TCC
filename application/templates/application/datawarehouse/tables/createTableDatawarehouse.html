@@ -1,0 +1,53 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class='alert alert-{{message.tags}} mb-2'>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class='container-separator'>
+            <h5>Table 🎲</h5>
+            <div class="input-group input-group-lg mb-3 ">
+                <span class="input-group-text" id="input">Table name</span>
+                <input type="text" class="form-control" name="datamartTable-name" readonly="true" value={{tableDatamart.name}}>
+            </div> 
+        </div>
+        <div class='container-separator'>
+            <h5>Columns ✅</h5>
+            <table class='table table-sm table-striped table-dark'>
+                <thead >
+                    <tr>
+                        <th scope="col">COLUMN</th>
+                        <th scope="col">TYPE</th>
+                        <th scope="col">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for column in columns %}
+                    <tr>
+                        <td>{{column.name}}</td>
+                        <td>{{column.type}}</td>
+                        <td>
+                            <button type='button' class="btn btn-primary btn-sm" id='column_{{column.id}}' >Edit</button>  
+                            <button type='button' class="btn btn-danger btn-sm" id='column_{{column.id}}' >Delete</button>
+                        </td>            
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-success align-items-center" onclick="location.href='{% url 'application:datamart-columns-create' tableDatamart.id %}'">Add column</button>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-success mt-3"> Save </button>
+            <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:datamart-tables' %}'"> Cancel </button>
+        </div>
+    </form>
+{% endblock %}

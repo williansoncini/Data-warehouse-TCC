@@ -125,3 +125,14 @@ class TableDatawarehouse(models.Model):
 
     def __str__(self):
         return self.name
+
+class ColumnsDatawarehouse(models.Model):
+    table = models.ForeignKey(TableDatawarehouse, on_delete=models.CASCADE, related_name='column_datawarehouse')
+    name = models.CharField(max_length=50)
+    type = models.CharField(max_length=50)
+
+    class Meta:
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.name

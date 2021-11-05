@@ -1,0 +1,62 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    <h5 class='titles'>Table datamart - Delete 🎲</h5>  
+
+    <form method="post">
+        {% csrf_token %}
+        <div class='container-separator'>
+            <h5>Table 🎲</h5>
+            <div class="input-group input-group-lg mb-3 ">
+                <span class="input-group-text" id="input">Table name</span>
+                <input type="text" class="form-control" value="{{table.name}}" name="table-name" readonly="true">
+            </div> 
+            
+            <div class='date-datamart'>
+                Created: <input type="datetime" value="{{table.created}}" readonly="true"> 📅
+                Last updated: <input type="datetime" value="{{table.updated}}" readonly="true"> ✅
+            </div>
+        </div>
+
+        <div class='container-separator'>
+            <h5>Columns ✅</h5>
+            <table class='table table-sm table-striped table-dark'>
+                <thead >
+                    <tr>
+                        <th scope="col">COLUMN</th>
+                        <th scope="col">TYPE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for column in columns %}
+                    <tr>
+                        <td>{{column.name}}</td>
+                        <td>{{column.type}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class='container-separator'>
+            <h5> Data visualization 🔍 </h5>
+            <div>
+                {% if data %}
+                    <table class='table table-sm table-striped table-dark '>
+                        {% for row in data %}
+                        <tr>
+                            {% for cedule in row %}
+                                <td> {{cedule}} </td>  
+                            {% endfor %}
+                        </tr>            
+                        {% endfor %}
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-success mt-3"> Delete </button>
+            <button type="reset" class="btn btn-danger mt-3" onClick="location.href='{% url 'application:datawarehouse-tables' %}'">Cancel </button>
+        </div>
+    </form>
+{% endblock %}
