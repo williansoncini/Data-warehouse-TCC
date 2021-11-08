@@ -18,11 +18,17 @@ class QueryDatamartDatawarehouse(View):
 
         for table in tables:
             columns = ColumnDataMart.objects.filter(table=table)
-            objeto = {
+            data = {
                 'table': table,
                 'columns': columns
             }
-            tableAndColumns.append(objeto)
+            tableAndColumns.append(data)
+
+        for data in tableAndColumns:
+            print(data['table'])
+            for column in data['columns']:
+                print(column)
+                
 
         return render(request, 'application/datawarehouse/input/datamart/query.html', {
             'tableAndColumns': tableAndColumns,

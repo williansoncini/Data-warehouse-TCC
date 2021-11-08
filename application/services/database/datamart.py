@@ -74,6 +74,21 @@ def dropCreateTable(datamart, dropCreateTableStatement):
     cur.close()
     conn.commit()
     conn.close()
+
+
+def deleteDataFromTable(datamart, table):
+    conn = psycopg2.connect(
+        database= datamart.database,
+        host=datamart.host,
+        user=datamart.user,
+        password=datamart.password,
+        port=datamart.port
+    )
+    cur = conn.cursor()
+    cur.execute('delete from {}'.format(table))
+    cur.close()
+    conn.commit()
+    conn.close()
    
 def dropTableIfExists(datamart, tableName):
     conn = psycopg2.connect(

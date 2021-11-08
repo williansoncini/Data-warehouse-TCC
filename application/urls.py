@@ -15,6 +15,10 @@ from application.views.datamart.tables.tableDeleteView import TableDatamartDelet
 from application.views.datamart.datamart import DatamartView
 from application.views.datamart.datamartDelete import DatamartDelete
 from application.views.datamart.tables.tableUpdateView import TableDatamartUpdateView
+from application.views.datawarehouse.cubes.create.selectColumns import SelectColumns
+from application.views.datawarehouse.cubes.create.selectTables import SelectTablesForCube
+from application.views.datawarehouse.cubes.deleteCube import DeleteCube
+from application.views.datawarehouse.cubes.listCubes import ListCubes
 from application.views.datawarehouse.input.dataLoad import DatawarehouseDataLoad
 from application.views.datawarehouse.input.queryDatamart import QueryDatamartDatawarehouse
 from application.views.datawarehouse.tables.deleteTableDatawarehouse import DatawarehouseDeleteTable
@@ -76,6 +80,10 @@ urlpatterns = [
     path('datawarehouse/tables/dataload', DatawarehouseDataLoad.as_view(), name='datawarehouse-import-tables-data-load'),
     path('datawarehouse/tables/', ListTableDatawarehouse.as_view(), name='datawarehouse-tables'),
     path('datawarehouse/tables/delete/<int:table_id>/', DatawarehouseDeleteTable.as_view(), name='datawarehouse-tables-delete'),
+    path('datawarehouse/cubes/', ListCubes.as_view(), name='datawarehouse-cubes'),
+    path('datawarehouse/cubes/create/select-tables', SelectTablesForCube.as_view(), name='datawarehouse-cubes-select-tables'),
+    path('datawarehouse/cubes/create/select-tables/columns', SelectColumns.as_view(), name='datawarehouse-cubes-select-tables-cubes'),
+    path('datawarehouse/cubes/delete/<int:cube_id>/', DeleteCube.as_view(), name='datawarehouse-cubes-delete'),
     # path('datamart/tables/columns/update/<int:table_id>/<int:column_id>/',UpdateColumnDatamartView.as_view(), name='datamart-columns-update'),
     # path('datamart/tables/columns/delete/<int:table_id>/<int:column_id>/',DeleteColumnDatamartView.as_view(), name='datamart-columns-delete'),
 ]

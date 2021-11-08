@@ -7,14 +7,17 @@
         {% csrf_token %}
         {% if createTableAutomatically %}
             <h5>Create table 📄</h5>
-            <div>
-                <p>This create, </p>
+            <div class='information-create-table'>
+                <p>This is the code for creating the table, feel free to change</p>
             </div>
             <div>
                 <textarea name="statementCreateTable" class="text-edit" rows=7 >{{statementCreateTable}}</textarea>
             </div>
         {% endif %}
         <h5>Select table 🔍<i class='fas fa-table'></i> </h5>
+        <div class='information-create-table'>
+            <p>This is the query query that will be executed to <b>EXTRACT</b> the data, feel free to manipulate it, but remember that you must respect the structure of the table.</p>
+        </div>
         <div>
             <textarea name="statementSelect" class="text-edit " rows=10 data-toggle="tab">{{statementSelect}}</textarea>
         </div>

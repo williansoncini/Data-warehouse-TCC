@@ -117,7 +117,6 @@ class ExtractConnection(models.Model):
 class TableDatawarehouse(models.Model):
     name = models.CharField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
-    # status = models.CharField(max_length=20,choices=STATUS_CHOICES,default='Active')
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -136,3 +135,28 @@ class ColumnsDatawarehouse(models.Model):
 
     def __str__(self):
         return self.name
+
+class CubeDatawarehouse(models.Model):
+    name = models.CharField(max_length=50,unique=True)
+    factTable = models.ForeignKey(TableDatawarehouse, on_delete=models.CASCADE, related_name='cube_fact_tableDatawarehouse')
+    firstDimension = models.ForeignKey(TableDatawarehouse, on_delete=models.CASCADE, related_name='cube_first_dimension_tableDatawarehouse')
+    secondDimension = models.ForeignKey(TableDatawarehouse, on_delete=models.CASCADE, related_name='cube_second_dimension_tableDatawarehouse')
+    thirdDimension = models.ForeignKey(TableDatawarehouse, on_delete=models.CASCADE, related_name='cube_third_dimension_tableDatawarehouse')
+    fourthDimension = models.ForeignKey(TableDatawarehouse, on_delete=models.CASCADE, related_name='cube_fourth_dimension_tableDatawarehouse')
+
+    class Meta:
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.name
+
+class CubeColumnsDatawarehouse(models.Model):
+    cube = models.ForeignKey(CubeDatawarehouse, on_delete=CASCADE, related_name='cube_cube_columns')
+    fact = models.ForeignKey(ColumnsDatawarehouse, on_delete=CASCADE, related_name='fact_column_id')
+    dimension = models.ForeignKey(ColumnsDatawarehouse, on_delete=CASCADE, related_name='dimention_column_id')
+
+    class Meta:
+        ordering = ('id',)
+
+    def __str__(self):
+        return str(self.cube)

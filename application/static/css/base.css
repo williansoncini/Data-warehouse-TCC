@@ -171,3 +171,116 @@ body{
     border-radius: 5px;
     margin-bottom: 1rem;
 }
+
+.fact-table {
+    padding: 6px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #d00000;
+    color: white;
+}
+
+.fact-table-container{
+    margin: 5px;
+    padding: 6px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #d00000;
+    color: white;
+    width: 50%;
+}
+
+.fact-table-container h5{
+    text-align: center;
+}
+
+.dimension-table-container{
+    margin: 5px;
+    padding: 6px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #0096c7;
+    color: white;
+    width: 50%;
+}
+
+.dimension-table-container h5 {
+    text-align: center;
+}
+
+.forming-cube{
+    display: flex;
+    padding: 6px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #212529;
+    color: white;
+}
+
+.dimension-table {
+    padding: 6px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #0096c7;
+    color: white;
+}
+
+.column-division{
+    width: 40%;
+}
+
+.padding{
+    padding: 5px;
+}
+
+.information-create-table{
+    margin: 10px 0px;
+    padding: 10px;
+    background-color: #0096c7;
+    color: white;
+    border-radius: 10px;
+}
+
+.information-create-table{
+    margin: 10px 0px;
+    padding: 10px;
+    background-color: #0096c7;
+    color: white;
+    border-radius: 10px;
+}
+
+.division-tables{
+    display: flex;
+    /* flex-direction: column; */
+}
+
+.table-container-import{
+    background-color: #ffea00;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.dimension-container-detail{
+    margin: 10px 0px;
+    padding: 10px;
+    background-color: #0096c7;
+    color: white;
+    border-radius: 10px;
+}
+
+.fact-container-detail{
+    margin: 10px 0px;
+    padding: 10px;
+    background-color: #d00000;
+    color: white;
+    border-radius: 10px;
+}
+
+.table-overflow{
+    overflow: auto;
+}
+
+.table-overflow td,th {
+    border: whitesmoke solid 1px;
+}

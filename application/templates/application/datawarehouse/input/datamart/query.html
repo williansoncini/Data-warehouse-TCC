@@ -29,6 +29,26 @@
             <textarea name="statementSelect" class="text-edit" rows=10 data-toggle="tab">{{statementSelect}}</textarea>
         </div>
 
+         <h5> Data visualization 🔍 </h5>
+            <div class='division-tables'>
+                {% if tableAndColumns %}
+                    {% for data in tableAndColumns %}
+                        <div class='table-container-import'>
+                        <h5>{{data.table}} 📄 </h5>
+                        <table class='table table-sm table-striped table-dark '>
+                            {% for column in data.columns  %}
+                            <tr>
+                                <td>
+                                    {{column}}                                    
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        </div>
+                        {% endfor %}
+                {% endif %}
+            </div>
+
         <button type="submit" class="btn btn-success">Continue</button>
         <button type="reset" class="btn btn-primary">Clear</button>
         <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'">Cancel</button>

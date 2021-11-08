@@ -1,0 +1,109 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    <div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger mb-4" role="alert">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}  
+
+        <div>
+           <h5 class='titles'>Select columns for make the cube 🎲</h5>  
+        </div>
+        <h5>Fact Table 🎲</h5>
+        <form  method="post">
+            {% csrf_token %}
+            <div class="input-group input-group-lg mb-3 ">
+                    <span class="input-group-text" id="input">Cube name</span>
+                    <input type="text" class="form-control" name="cube-name">
+                </div> 
+            <div class='forming-cube'>
+                
+                <div class='fact-table-container'>
+                    <h5 >Fact Table 📄</h5>
+                    <div class='p-2'>
+                        <h6>#1 - Dimension # {{factTableDatawarehouse}}</h6>
+                        <select  class='form-select m-1' arial-label='Select data mart' name='first-fact-column-dimension' arial-label='Select data mart' name='fact'>
+                            <optiON selected value='None'>Open this select menu</option>
+                            {% for column in columnsFactTable %}
+                                <option value="{{column.id}}">{{column}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class='p-2'>
+                        <h6>#2 - Dimension # {{factTableDatawarehouse}}</h6>
+                        <select class='form-select m-1 padding' arial-label='Select data mart' name='second-fact-column-dimension' arial-label='Select data mart' name='fact'>
+                            <optiON selected value='None'>Open this select menu</option>
+                            {% for column in columnsFactTable %}
+                                <option value="{{column.id}}">{{column}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class='p-2'>
+                        <h6>#3 - Dimension # {{factTableDatawarehouse}}</h6>
+                        <select class='form-select m-1 padding' arial-label='Select data mart' name='third-fact-column-dimension' arial-label='Select data mart' name='fact'>
+                            <optiON selected value='None'>Open this select menu</option>
+                            {% for column in columnsFactTable %}
+                                <option value="{{column.id}}">{{column}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class='p-2'>
+                        <h6>#4 - Dimension # {{factTableDatawarehouse}}</h6>
+                        <select class='form-select m-1 padding' arial-label='Select data mart' name='fourth-fact-column-dimension' arial-label='Select data mart' name='fact'>
+                            <optiON selected value='None'>Open this select menu</option>
+                            {% for column in columnsFactTable %}
+                                <option value="{{column.id}}">{{column}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                 <div class='dimension-table-container'>
+                 <h5 >Dimension Tables 📄</h5>
+                    <div class='p-2'>
+                        <h6>#1 - Dimension # {{firstDimensionTableDatawarehouse}}</h6>
+                        <select  class='form-select m-1' arial-label='Select data mart' name='first-column-dimension' arial-label='Select data mart' name='fact'>
+                            <optiON selected value='None'>Open this select menu</option>
+                            {% for column in columnsFirstDimension %}
+                                <option value="{{column.id}}">{{column}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class='p-2'>
+                        <h6>#2 - Dimension # {{secondDimensionTableDatawarehouse}}</h6>
+                        <select class='form-select m-1 padding' arial-label='Select data mart' name='second-column-dimension' arial-label='Select data mart' name='fact'>
+                            <optiON selected value='None'>Open this select menu</option>
+                            {% for column in columnsSecondDimension %}
+                                <option value="{{column.id}}">{{column}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class='p-2'>
+                        <h6>#3 - Dimension # {{thirdDimensionTableDatawarehouse}}</h6>
+                        <select class='form-select m-1 padding' arial-label='Select data mart' name='third-column-dimension' arial-label='Select data mart' name='fact'>
+                            <optiON selected value='None'>Open this select menu</option>
+                            {% for column in columnsThirdDimension %}
+                                <option value="{{column.id}}">{{column}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class='p-2'>
+                        <h6>#4 - Dimension # {{fourthDimensionTableDatawarehouse}}</h6>
+                        <select class='form-select m-1 padding' arial-label='Select data mart' name='fourth-column-dimension' arial-label='Select data mart' name='fact'>
+                            <optiON selected value='None'>Open this select menu</option>
+                            {% for column in columnsFourthDimension %}
+                                <option value="{{column.id}}">{{column}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="reset" class="btn btn-primary">Clear</button>
+            <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'">Cancel</button>
+        </form>         
+    </div>
+{% endblock content %}

@@ -14,10 +14,13 @@ class DataloadView(View):
             'firstTwentyRows':firstTwentyRows})
 
     def post(self, request):
+        
         createTableAutomatically = request.session['createTableAutomatically']
         file = TemporaryFile.objects.get(pk=request.session['tempFilePk'])
         inputDataWithCsvHeader = bool(request.POST.get('checkbox',''))
         filePath = file.filePath
+        ColumnStagingArea.objects.all().delete()
+
         if createTableAutomatically:
             tableName = file.name
             typeColumns = getTypeOfColumnsFromCsvFile(filePath)
@@ -29,6 +32,8 @@ class DataloadView(View):
 
             (tableStagingArea,__) = TableStagingArea.objects.get_or_create(tableName=tableName)
             
+            
+
             for index, column in enumerate(columns):
                 (columnStagingArea,_) = ColumnStagingArea.objects.get_or_create(
                     table=tableStagingArea,

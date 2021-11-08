@@ -11,6 +11,3 @@ class ListTableDatawarehouse(View):
         return render(request, 'application/datawarehouse/tables/listTablesDatawarehouse.html',{
             'tables':tables
         })
-
-    # def post(self, request):
-    #     pass

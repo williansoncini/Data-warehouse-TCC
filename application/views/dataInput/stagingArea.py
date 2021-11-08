@@ -1,5 +1,5 @@
 from django.contrib import messages
-from application.services.database.datamart import dropCreateTable, importFileInDatamart
+from application.services.database.datamart import deleteDataFromTable, dropCreateTable, importFileInDatamart
 from application.services.database.stagingArea import clearStagingArea, connect, makeSelectStatement, makeStatementCreateTable
 from application.models import ColumnDataMart, ColumnStagingArea, Datamart, TableDataMart,TableStagingArea
 from django.shortcuts import get_object_or_404, redirect, render
@@ -114,8 +114,8 @@ def updateColumnStagingArea(request, table_id, column_id):
             columnStagingArea.save()
 
         print('tipo novo: ', newColumnType)
-        print('tipo antigo: ', columnStagingArea.type)
-        if newColumnType != columnStagingArea.type:
+        print('tipo antigo: ', columnStagingArea.typeColumn)
+        if newColumnType != columnStagingArea.typeColumn:
             try:
                 conn = connect()
                 cur = conn.cursor()
@@ -127,16 +127,16 @@ def updateColumnStagingArea(request, table_id, column_id):
                     ))
                 print("ALTER TABLE IF EXISTS {} ALTER COLUMN {} TYPE {} USING {}::{};".format(tableStagingArea.tableName,
                     columnStagingArea.name,
-                    columnStagingArea.type,
+                    columnStagingArea.typeColumn,
                     columnStagingArea.name,
-                    columnStagingArea.type
+                    columnStagingArea.typeColumn
                     ))
 
                 cur.close()
                 conn.commit()
                 conn.close()
          
-                columnStagingArea.type = newColumnType
+                columnStagingArea.typeColumn = newColumnType
                 columnStagingArea.save()
             except:
                 print('Tipo de dados não suportado pela coluna')
@@ -206,7 +206,10 @@ def statementView(request):
 
             if(createTableAutomatically):
                 dropCreateTable(datamart,dropCreateTableStatement)
-        
+            else:
+                deleteDataFromTable(datamart,tableName)
+
+
         file = open(path.dirname(__file__) + '/../../../exports/teste1.csv', 'r')
         importFileInDatamart(datamart,tableName,file)
         file.close()

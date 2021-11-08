@@ -1,0 +1,71 @@
+{% extends 'application/base.html' %}
+
+{% block content %}
+    <div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger mb-4" role="alert">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}  
+
+        <div>
+           <h5 class='titles'>Select tables for make the cube 🎲</h5>  
+        </div>
+        <form  method="post">
+            {% csrf_token %}
+            <div class='fact-table'>
+                <h5>Fact Table 🎲</h5>
+                <select class='form-select' arial-label='Select data mart' name='fact'>
+                    <option selected value='None'>Open this select menu</option>
+                    {% for table in tables %}
+                        <option value="{{table}}">{{table}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class='dimension-table'>
+                <h5>#1 - First dimension table 📄</h5>
+                <select class='form-select' arial-label='Select data mart' name='first-dimension'>
+                    <option selected value='None'>First dimension table</option>
+                    {% for table in tables %}
+                        <option value="{{table}}">{{table}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class='dimension-table'>
+                <h5>#2 - Second dimension table 📄</h5>
+                <select class='form-select' arial-label='Select data mart' name='second-dimension'>
+                    <option selected value='None'>Second dimension table</option>
+                    {% for table in tables %}
+                        <option value="{{table}}">{{table}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class='dimension-table'>            
+                <h5>#3 - Third dimension table 📄</h5>
+                <select class='form-select' arial-label='Select data mart' name='third-dimension'>
+                    <option selected value='None'>Third dimension table</option>
+                    {% for table in tables %}
+                        <option value="{{table}}">{{table}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class='dimension-table'>
+                <h5>#4 - Fourth dimension table 📄</h5>
+                <select class='form-select' arial-label='Select data mart' name='fourth-dimension'>
+                    <option selected value='None'>Fourth dimension table</option>
+                    {% for table in tables %}
+                        <option value="{{table}}">{{table}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+             
+            <button type="submit" class="btn btn-success" >Continue</button>
+            <button type="reset" class="btn btn-danger" onClick="location.href='{% url 'application:home' %}'">Cancel</button>
+        </form>         
+    </div>
+{% endblock content %}

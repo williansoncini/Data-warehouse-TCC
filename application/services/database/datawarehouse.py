@@ -1,3 +1,4 @@
+from django import VERSION
 import psycopg2
 from dotenv import load_dotenv
 from os import getenv
@@ -230,3 +231,52 @@ def importCsvFileInTableWithHeader(filePath, nameTable):
     conn.commit()
     print('conexão sendo fechada!')
     conn.close()  
+
+def createViewWithStatement(viewName, statement):
+    load_dotenv()
+    conn = psycopg2.connect(
+        database=getenv('DW_DATA_BASE_DATABASE'),
+        host=getenv('DW_DATA_BASE_HOST'),
+        user=getenv('DW_DATA_BASE_USERNAME'),
+        password=getenv('DW_DATA_BASE_PASSWORD'),
+        port=getenv('DW_DATA_BASE_PORT')
+    )
+    cur = conn.cursor()
+    cur.execute('drop view if exists {};'.format(viewName))
+    fullStatement = 'create view {} as ({});'.format(viewName, statement)
+    cur.execute(fullStatement)
+    cur.close()
+    conn.commit()
+    conn.close()
+
+def selectDataFromView(viewName):
+    load_dotenv()
+    conn = psycopg2.connect(
+        database=getenv('DW_DATA_BASE_DATABASE'),
+        host=getenv('DW_DATA_BASE_HOST'),
+        user=getenv('DW_DATA_BASE_USERNAME'),
+        password=getenv('DW_DATA_BASE_PASSWORD'),
+        port=getenv('DW_DATA_BASE_PORT')
+    )
+    cur = conn.cursor()
+    print('aqui')
+    cur.execute('select * from {};'.format(viewName))
+    data = cur.fetchall()
+    cur.close()
+    conn.commit()
+    conn.close()
+    return data
+
+def deleteView(viewName):
+    conn = psycopg2.connect(
+        database=getenv('DW_DATA_BASE_DATABASE'),
+        host=getenv('DW_DATA_BASE_HOST'),
+        user=getenv('DW_DATA_BASE_USERNAME'),
+        password=getenv('DW_DATA_BASE_PASSWORD'),
+        port=getenv('DW_DATA_BASE_PORT')
+    )
+    cur = conn.cursor()
+    cur.execute('drop view if exists {};'.format(viewName))
+    cur.close()
+    conn.commit()
+    conn.close()
