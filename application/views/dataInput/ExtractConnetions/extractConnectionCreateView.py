@@ -33,9 +33,10 @@ class ExtractConnectionCreateView(View):
                     password=getenv('SYSTEM_DATA_BASE_PASSWORD')
                 )
                 conn.close()
-            except:
+            except Exception as e:
+                print(e)
                 messages.warning(request, 'Falha ao se conectar!')
-                return redirect('application:extract-connections')
+                return redirect('application:extract-connections-create')
 
             ExtractConnection(
                 name = name,
@@ -53,10 +54,13 @@ class ExtractConnectionCreateView(View):
             username = request.POST.get('username')
             password = request.POST.get('password')
             port = request.POST.get('port')
-
+            print(databaseName)
+            print(host)
+            print(username)
+            print(password)
+            print(port)
             try:
                 conn = psycopg2.connect(
-                    name = name,
                     host=host,
                     database=databaseName,
                     user=username,
@@ -64,9 +68,10 @@ class ExtractConnectionCreateView(View):
                     port=port
                 )
                 conn.close()
-            except:
+            except Exception as e:
+                print(e)
                 messages.warning(request, 'Falha ao se conectar!')
-                return redirect('application:extract-connections')
+                return redirect('application:extract-connections-create')
 
             ExtractConnection(
                 name = name,

@@ -1,6 +1,14 @@
 {% extends 'application/base.html' %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class='alert alert-{{message.tags}} mb-2'>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <h5 class='titles'>Extract Connection - Create 🌐</h5>  
     <form method="post">
         {% csrf_token %}

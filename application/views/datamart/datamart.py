@@ -11,8 +11,3 @@ class DatamartView(View):
         return render(request, 'application/datamart/list.html', {
             'datamarts': datamarts
         })
-
-    def post(self, request):
-        print(request)
-        print('post')
-        return HttpResponse('Bora mudar de tela?') 
